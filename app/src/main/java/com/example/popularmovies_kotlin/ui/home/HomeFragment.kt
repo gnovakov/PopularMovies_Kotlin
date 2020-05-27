@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
+import com.example.popularmovies_kotlin.databinding.GridViewItemBinding
 
 class HomeFragment : Fragment() {
 
@@ -17,7 +18,8 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding = FragmentHomeBinding.inflate(inflater)
+        //val binding = FragmentHomeBinding.inflate(inflater)
+        val binding = GridViewItemBinding.inflate(inflater)
 
         // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
         binding.setLifecycleOwner(this)

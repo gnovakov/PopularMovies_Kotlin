@@ -5,19 +5,22 @@
 
     <data>
         <variable
-            name="homeViewModel"
-            type="com.example.popularmovies_kotlin.ui.home.HomeViewModel" />
+            name="movie"
+            type="com.example.popularmovies_kotlin.api.models.Movie" />
+        <variable
+            name="cons"
+            type="com.example.popularmovies_kotlin.Const" />
     </data>
 
     <ImageView
-        android:id="@+id/mars_image"
+        android:id="@+id/movie_image"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:scaleType="centerCrop"
+        android:layout_height="wrap_content"
         android:adjustViewBounds="true"
         android:padding="2dp"
-        app:imageUrl="@{homeViewModel.moviePoster}"
-        tools:src="@tools:sample/backgrounds/scenic"/>
+        android:scaleType="fitStart"
+        app:imageUrl="@{cons.BASE_IMAGE_LARGE + movie.poster_path}"
+        tools:src="@tools:sample/backgrounds/scenic" />
 </layout>
 
     <!-- app:imageUrl="@{constant.BASE_IMAGE_MEDIUM + homeViewModel.movie.poster_path}" -->

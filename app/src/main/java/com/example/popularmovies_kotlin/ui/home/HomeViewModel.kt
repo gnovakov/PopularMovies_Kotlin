@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.BuildConfig
-import com.example.popularmovies_kotlin.Const
 import com.example.popularmovies_kotlin.api.MovieServiceApi
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.coroutines.CoroutineScope
@@ -12,16 +11,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
+enum class MovieApiStatus { LOADING, ERROR, DONE }
+
 class HomeViewModel : ViewModel() {
 
     // The most recent API response
-    private val _response = MutableLiveData<String>()
-    val response: LiveData<String>
-        get() = _response
+    private val _status = MutableLiveData<MovieApiStatus>()
+    val status: LiveData<MovieApiStatus>
+        get() = _status
 
     // A Movie
-    private val _movie = MutableLiveData<Movie>()
-    val movie: LiveData<Movie>
+    private val _movie = MutableLiveData<List<Movie>>()
+    val movie: LiveData<List<Movie>>
         get() = _movie
 
     // A Movie Poster Url
@@ -36,25 +37,24 @@ class HomeViewModel : ViewModel() {
         viewModelJob + Dispatchers.Main )
 
     init {
-        getMovies()
+        getTopRatedMovies()
     }
 
 
-    private fun getMovies() {
+    private fun getTopRatedMovies() {
 
         // Using Coroutines
         coroutineScope.launch {
             var getPropertiesDeferred = MovieServiceApi.retrofitService
                 .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, 1, "GB")
             try {
+                _status.value = MovieApiStatus.LOADING
                 var apiResult = getPropertiesDeferred.await()
-                _response.value = "Success: ${apiResult.results.size} Movies retrieved"
-                if (apiResult.results.size > 0) {
-                    _movie.value = apiResult.results[0]
-                    _moviePoster.value = Const.BASE_IMAGE_LARGE + movie.value?.poster_path
-                }
+                _status.value = MovieApiStatus.DONE
+                _movie.value = apiResult.results
             } catch (e: Exception) {
-                _response.value = "Failure: ${e.message}"
+                _status.value = MovieApiStatus.ERROR
+                _movie.value = ArrayList()
             }
         }
     }

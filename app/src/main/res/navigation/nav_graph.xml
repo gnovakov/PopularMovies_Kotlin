@@ -9,5 +9,20 @@
         android:id="@+id/homeFragment"
         android:name="com.example.popularmovies_kotlin.ui.home.HomeFragment"
         android:label="HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.example.popularmovies_kotlin.ui.detail.DetailFragment"
+        android:label="DetailFragment"
+        tools:layout="@layout/fragment_detail">
+        <argument
+            android:name="selectedMovie"
+            app:argType="com.example.popularmovies_kotlin.api.models.Movie"
+            />
+    </fragment>
+
 </navigation>

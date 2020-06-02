@@ -17,11 +17,11 @@
             android:id="@+id/movie_grid"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:padding="6dp"
+            android:padding="0dp"
             android:clipToPadding="false"
 
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:listData="@{homeViewModel.movie}"
+            app:listData="@{homeViewModel.movies}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

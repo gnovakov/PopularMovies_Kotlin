@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.BuildConfig
+import com.example.popularmovies_kotlin.Const
 import com.example.popularmovies_kotlin.api.MovieServiceApi
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.coroutines.CoroutineScope
@@ -13,6 +14,11 @@ import kotlinx.coroutines.launch
 
 enum class MovieApiStatus { LOADING, ERROR, DONE }
 
+enum class MovieApiFilter(val value: String) {
+    POPULAR_MOVIES("popularity.desc"),
+    TOP_RATED_MOVIES("vote_count.desc")
+}
+
 class HomeViewModel : ViewModel() {
 
     // The most recent API response
@@ -21,14 +27,14 @@ class HomeViewModel : ViewModel() {
         get() = _status
 
     // A Movie
-    private val _movie = MutableLiveData<List<Movie>>()
-    val movie: LiveData<List<Movie>>
-        get() = _movie
+    private val _movies = MutableLiveData<List<Movie>>()
+    val movies: LiveData<List<Movie>>
+        get() = _movies
 
-    // A Movie Poster Url
-    private val _moviePoster = MutableLiveData<String>()
-    val moviePoster: LiveData<String>
-        get() = _moviePoster
+    // Holds the selected property data
+    private val _navigateToSelectedMovie = MutableLiveData<Movie>()
+    val navigateToSelectedMovie: LiveData<Movie>
+        get() = _navigateToSelectedMovie
 
     private var viewModelJob = Job() // Coroutines Job
 
@@ -37,27 +43,43 @@ class HomeViewModel : ViewModel() {
         viewModelJob + Dispatchers.Main )
 
     init {
-        getTopRatedMovies()
+        getTopRatedMovies(MovieApiFilter.POPULAR_MOVIES)
     }
 
 
-    private fun getTopRatedMovies() {
+    private fun getTopRatedMovies(filter: MovieApiFilter) {
 
         // Using Coroutines
         coroutineScope.launch {
             var getPropertiesDeferred = MovieServiceApi.retrofitService
-                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, 1, "GB")
+                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
+                    "false", "false", 1)
             try {
                 _status.value = MovieApiStatus.LOADING
                 var apiResult = getPropertiesDeferred.await()
                 _status.value = MovieApiStatus.DONE
-                _movie.value = apiResult.results
+                _movies.value = apiResult.results
             } catch (e: Exception) {
                 _status.value = MovieApiStatus.ERROR
-                _movie.value = ArrayList()
+                _movies.value = ArrayList()
             }
         }
     }
+
+    // sets _navigateToSelectedProperty to the selected Mars property, when this is set the switch to detail page will happen
+    fun displayMovieDetails(movie: Movie) {
+        _navigateToSelectedMovie.value = movie
+    }
+
+    // sets _navigateToSelectedProperty back to null/resets it, this way when we return to overview page it doesn't automatically go back to the detail page
+    fun displayMovieDetailsComplete() {
+        _navigateToSelectedMovie.value = null
+    }
+
+    fun updateFilter(filter: MovieApiFilter) {
+        getTopRatedMovies(filter)
+    }
+
 
     // Cancel the Coroutines Job
     override fun onCleared() {

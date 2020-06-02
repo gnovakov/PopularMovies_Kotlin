@@ -9,7 +9,7 @@ import com.example.popularmovies_kotlin.api.MovieApi
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.databinding.GridViewItemBinding
 
-class MovieAdapter : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback) {
+class MovieAdapter( private val onClickListener: OnClickListener ) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieAdapter.MovieViewHolder {
         return MovieViewHolder(GridViewItemBinding.inflate(
@@ -18,6 +18,9 @@ class MovieAdapter : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallba
 
     override fun onBindViewHolder(holder: MovieAdapter.MovieViewHolder, position: Int) {
         val movie = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(movie)
+        }
         holder.bind(movie)
     }
 
@@ -37,6 +40,10 @@ class MovieAdapter : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallba
             binding.movie = movie
             binding.executePendingBindings()
         }
+    }
+
+    class OnClickListener(val clickListener: (movie: Movie) -> Unit) {
+        fun onClick(movie: Movie) = clickListener(movie)
     }
 
 }

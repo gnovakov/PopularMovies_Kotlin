@@ -6,6 +6,13 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
+enum class MovieApiStatus { LOADING, ERROR, DONE }
+
+enum class MovieApiFilter(val value: String) {
+    POPULAR_MOVIES("popularity.desc"),
+    TOP_RATED_MOVIES("vote_count.desc")
+}
+
 private const val BASE_URL = "https://api.themoviedb.org/"
 
 // Instantiate Moshi

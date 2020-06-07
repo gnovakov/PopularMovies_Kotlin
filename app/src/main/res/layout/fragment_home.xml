@@ -21,7 +21,7 @@
             android:clipToPadding="false"
 
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:listData="@{homeViewModel.movies}"
+            app:movieListData="@{homeViewModel.movies}"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -39,7 +39,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:marsApiStatus="@{homeViewModel.status}" />
+            app:movieApiStatus="@{homeViewModel.status}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

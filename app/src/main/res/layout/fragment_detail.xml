@@ -31,22 +31,46 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="parent"
-                app:imageUrl="@{cons.BASE_IMAGE_LARGE + detailViewModel.selectedMovie.poster_path}"
+                app:imageUrl="@{cons.BASE_IMAGE_SMALL + detailViewModel.selectedMovie.poster_path}"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/releaseDate"
+                android:id="@+id/release_date_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
-                android:text="@{detailViewModel.selectedMovie.release_date}"
-                android:textSize="20sp"
+                android:text="Release Date"
+                android:textSize="18sp"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="2019"/>
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/release_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="5dp"
+                android:text="@{detailViewModel.selectedMovie.release_date}"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/movie_poster"
+                app:layout_constraintTop_toBottomOf="@+id/release_date_title"
+                tools:text="2019" />
+
+            <TextView
+                android:id="@+id/rating_title"
+                android:layout_width="57dp"
+                android:layout_height="22dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:text="Rating"
+                android:textSize="18sp"
+                app:layout_constraintStart_toEndOf="@+id/movie_poster"
+                app:layout_constraintTop_toBottomOf="@+id/release_date" />
 
             <TextView
                 android:id="@+id/rating"
@@ -54,11 +78,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="5dp"
-                android:text="@{detailViewModel.selectedMovie.vote_count}"
+                android:text="@{String.valueOf(detailViewModel.selectedMovie.vote_average)}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster"
-                app:layout_constraintTop_toBottomOf="@+id/releaseDate"
+                app:layout_constraintTop_toBottomOf="@+id/rating_title"
                 tools:text="7.8/10" />
 
             <TextView

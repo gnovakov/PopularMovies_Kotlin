@@ -23,6 +23,7 @@ class MovieAdapter( private val onClickListener: OnClickListener ) : ListAdapter
         }
         holder.bind(movie)
     }
+    
 
     companion object DiffCallback : DiffUtil.ItemCallback<Movie>() {
 

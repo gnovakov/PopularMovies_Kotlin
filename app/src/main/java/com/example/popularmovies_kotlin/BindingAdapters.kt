@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.home.MovieAdapter
-import com.example.popularmovies_kotlin.ui.home.MovieApiStatus
+import com.example.popularmovies_kotlin.api.MovieApiStatus
 
 /* Uses Glide Library and Loads an Image and has loading and error images if the loading fails,
    the glide library gets used when an XML item has the imageUrl attribute such as:
@@ -30,13 +30,13 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
     }
 }
 
-@BindingAdapter("listData")
+@BindingAdapter("movieListData")
 fun bindRecyclerView(recyclerView: RecyclerView, data: List<Movie>?) {
     val adapter = recyclerView.adapter as MovieAdapter
     adapter.submitList(data)
 }
 
-@BindingAdapter("marsApiStatus")
+@BindingAdapter("movieApiStatus")
 fun bindStatus(statusImageView: ImageView, status: MovieApiStatus?) {
     when (status) {
         MovieApiStatus.LOADING -> {

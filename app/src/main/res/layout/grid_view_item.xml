@@ -19,7 +19,7 @@
         android:adjustViewBounds="true"
         android:padding="0dp"
         android:scaleType="fitStart"
-        app:imageUrl="@{cons.BASE_IMAGE_LARGE + movie.poster_path}"
+        app:imageUrl="@{cons.BASE_IMAGE_SMALL + movie.poster_path}"
         tools:src="@tools:sample/backgrounds/scenic" />
 </layout>
 

@@ -6,10 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.popularmovies_kotlin.Const
 import com.example.popularmovies_kotlin.R
+import com.example.popularmovies_kotlin.api.MovieApiFilter
 import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
-import com.example.popularmovies_kotlin.databinding.GridViewItemBinding
 
 class HomeFragment : Fragment() {
 

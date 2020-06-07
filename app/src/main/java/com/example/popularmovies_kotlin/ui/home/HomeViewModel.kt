@@ -4,20 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.BuildConfig
-import com.example.popularmovies_kotlin.Const
+import com.example.popularmovies_kotlin.api.MovieApiFilter
+import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieServiceApi
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-
-enum class MovieApiStatus { LOADING, ERROR, DONE }
-
-enum class MovieApiFilter(val value: String) {
-    POPULAR_MOVIES("popularity.desc"),
-    TOP_RATED_MOVIES("vote_count.desc")
-}
 
 class HomeViewModel : ViewModel() {
 
@@ -51,12 +45,12 @@ class HomeViewModel : ViewModel() {
 
         // Using Coroutines
         coroutineScope.launch {
-            var getPropertiesDeferred = MovieServiceApi.retrofitService
+            var getMoviesDeferred = MovieServiceApi.retrofitService
                 .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
                     "false", "false", 1)
             try {
                 _status.value = MovieApiStatus.LOADING
-                var apiResult = getPropertiesDeferred.await()
+                var apiResult = getMoviesDeferred.await()
                 _status.value = MovieApiStatus.DONE
                 _movies.value = apiResult.results
             } catch (e: Exception) {
@@ -79,7 +73,6 @@ class HomeViewModel : ViewModel() {
     fun updateFilter(filter: MovieApiFilter) {
         getTopRatedMovies(filter)
     }
-
 
     // Cancel the Coroutines Job
     override fun onCleared() {

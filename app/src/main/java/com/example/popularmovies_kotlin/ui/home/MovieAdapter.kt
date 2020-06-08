@@ -5,14 +5,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.popularmovies_kotlin.api.MovieApi
 import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.databinding.GridViewItemBinding
+import com.example.popularmovies_kotlin.databinding.MovieGridViewItemBinding
 
 class MovieAdapter( private val onClickListener: OnClickListener ) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieAdapter.MovieViewHolder {
-        return MovieViewHolder(GridViewItemBinding.inflate(
+        return MovieViewHolder(MovieGridViewItemBinding.inflate(
             LayoutInflater.from(parent.context)))
     }
 
@@ -23,7 +22,7 @@ class MovieAdapter( private val onClickListener: OnClickListener ) : ListAdapter
         }
         holder.bind(movie)
     }
-    
+
 
     companion object DiffCallback : DiffUtil.ItemCallback<Movie>() {
 
@@ -36,7 +35,7 @@ class MovieAdapter( private val onClickListener: OnClickListener ) : ListAdapter
         }
     }
 
-    class MovieViewHolder(private var binding: GridViewItemBinding): RecyclerView.ViewHolder(binding.root) {
+    class MovieViewHolder(private var binding: MovieGridViewItemBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
             binding.movie = movie
             binding.executePendingBindings()

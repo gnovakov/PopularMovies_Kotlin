@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:spanCount="2"
             tools:itemCount="16"
-            tools:listitem="@layout/grid_view_item" />
+            tools:listitem="@layout/movie_grid_view_item" />
 
         <ImageView
             android:id="@+id/status_image"

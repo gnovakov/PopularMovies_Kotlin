@@ -30,14 +30,14 @@ class HomeFragment : Fragment() {
 
         // Bind RecyclerView
         binding.movieGrid.adapter = MovieAdapter(MovieAdapter.OnClickListener {
-            viewModel.displayMovieDetails(it)
+            viewModel.displayMovieDetails(it) // Set the Movie to the _navigateToSelectedMovie Live Data
         })
 
         viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, Observer {
             if(it != null) {
                 this.findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(it))
-                viewModel.displayMovieDetailsComplete()
+                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)) //Open the Detail Fragment if _navigateToSelectedMovie is not Null
+                viewModel.displayMovieDetailsComplete() // Clear the _navigateToSelectedMovie after the Detail fragment is opened
             }
         })
 

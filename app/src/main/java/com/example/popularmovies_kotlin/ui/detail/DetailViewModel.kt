@@ -1,14 +1,14 @@
 package com.example.popularmovies_kotlin.ui.detail
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.popularmovies_kotlin.BuildConfig
+import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieServiceApi
 import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.api.MovieApiFilter
-import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.models.Trailer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,26 +32,29 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
     val trailers: LiveData<List<Trailer>>
         get() = _trailers
 
+    // ID to get the Trailers and the Reviews.
+    private val _movieId = MutableLiveData<Int>()
+    val movieId: LiveData<Int>
+        get() = _movieId
+
     private var viewModelJob = Job() // Coroutines Job
 
     // A coroutine scope for that new job using the main dispatcher
     private val coroutineScope = CoroutineScope(
         viewModelJob + Dispatchers.Main )
 
-    // ID to get the Trailers and the Reviews.
-    val id = selectedMovie.value?.id
-
 
     init {
         _selectedMovie.value = movie
-        getTrailers()
+        _movieId.value = selectedMovie.value?.id
+        movieId.value?.let { getTrailers(it) }
     }
 
-    private fun getTrailers() {
+    private fun getTrailers(movieId: Int) {
 
         // Using Coroutines
         coroutineScope.launch {
-            var getTrailersDeferred = id?.let {
+            var getTrailersDeferred = movieId?.let {
                 MovieServiceApi.retrofitService
                     .getTrailers(
                         it, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
@@ -67,5 +70,7 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
             }
         }
     }
+
+
 
 }

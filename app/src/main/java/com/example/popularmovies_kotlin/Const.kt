@@ -2,7 +2,7 @@ package com.example.popularmovies_kotlin
 
 object Const {
 
-    private const val BASE_IMAGE_URL = "http://image.tmdb.org/t/p/"
+    private const val BASE_IMAGE_URL = "https://image.tmdb.org/t/p/"
 
     private const val IMAGE_SIZE_W342 = "w342"
     private const val IMAGE_SIZE_W185 = "w185"

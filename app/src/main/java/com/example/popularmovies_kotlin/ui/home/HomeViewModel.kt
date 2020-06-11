@@ -1,5 +1,6 @@
 package com.example.popularmovies_kotlin.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,6 +26,8 @@ class HomeViewModel : ViewModel() {
     val movies: LiveData<List<Movie>>
         get() = _movies
 
+
+
     // Holds the selected property data
     private val _navigateToSelectedMovie = MutableLiveData<Movie>()
     val navigateToSelectedMovie: LiveData<Movie>
@@ -42,7 +45,6 @@ class HomeViewModel : ViewModel() {
 
 
     private fun getTopRatedMovies(filter: MovieApiFilter) {
-
         // Using Coroutines
         coroutineScope.launch {
             var getMoviesDeferred = MovieServiceApi.retrofitService

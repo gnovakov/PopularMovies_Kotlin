@@ -1,45 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.example.popularmovies_kotlin.MainActivity">
 
-    <data>
-        <variable
-            name="homeViewModel"
-            type="com.example.popularmovies_kotlin.ui.home.HomeViewModel" />
-    </data>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/movie_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.popularmovies_kotlin.MainActivity">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/movie_grid"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="0dp"
-            android:clipToPadding="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:itemCount="16"
+        tools:listitem="@layout/movie_grid_view_item"/>
 
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:movieListData="@{homeViewModel.movies}"
-
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:spanCount="2"
-            tools:itemCount="16"
-            tools:listitem="@layout/movie_grid_view_item" />
-
-        <ImageView
-            android:id="@+id/status_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:movieApiStatus="@{homeViewModel.status}" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</androidx.constraintlayout.widget.ConstraintLayout>

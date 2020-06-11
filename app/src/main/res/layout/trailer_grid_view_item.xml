@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="trailer"
-            type="com.example.popularmovies_kotlin.api.models.Trailer" />
-        <variable
-            name="cons"
-            type="com.example.popularmovies_kotlin.Const" />
-    </data>
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -36,7 +30,6 @@
             android:layout_marginLeft="20dp"
             android:layout_marginEnd="10dp"
             android:layout_marginRight="10dp"
-            android:text="@{trailer.name}"
             android:textColor="#de000000"
             android:textSize="17sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -49,6 +42,6 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</layout>
+</GridLayout>
 
     <!-- app:imageUrl="@{constant.BASE_IMAGE_MEDIUM + homeViewModel.movie.poster_path}" -->

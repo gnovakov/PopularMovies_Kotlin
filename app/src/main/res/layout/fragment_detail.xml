@@ -1,21 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
-
-    <data>
-        <variable
-            name="detailViewModel"
-            type="com.example.popularmovies_kotlin.ui.detail.DetailViewModel" />
-        <variable
-            name="cons"
-            type="com.example.popularmovies_kotlin.Const" />
-    </data>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".DetailFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -31,7 +19,6 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitStart"
                 app:layout_constraintStart_toStartOf="parent"
-                app:imageUrl="@{cons.BASE_IMAGE_SMALL + detailViewModel.selectedMovie.poster_path}"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@tools:sample/avatars" />
 
@@ -54,7 +41,6 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="5dp"
-                android:text="@{detailViewModel.selectedMovie.release_date}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster"
                 app:layout_constraintTop_toBottomOf="@+id/release_date_title"
@@ -78,7 +64,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginLeft="20dp"
-                android:text="@{String.valueOf(detailViewModel.selectedMovie.vote_average)}"
                 android:textSize="14sp"
                 app:layout_constraintStart_toEndOf="@+id/movie_poster"
                 app:layout_constraintTop_toBottomOf="@+id/rating_title"
@@ -92,7 +77,6 @@
                 android:layout_marginLeft="10dp"
                 android:textColor="#de000000"
                 android:textSize="20sp"
-                android:text="@{detailViewModel.selectedMovie.title}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/movie_poster"
                 tools:text="The Shawshank Redemption" />
@@ -118,7 +102,6 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:scrollbars="vertical"
-                android:text="@{detailViewModel.selectedMovie.overview}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/synopsis_title"
@@ -164,11 +147,9 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/trailers_title"
-                app:trailerListData="@{detailViewModel.trailers}"
                 app:spanCount="1"
                 tools:itemCount="16"
                 tools:listitem="@layout/movie_grid_view_item" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</layout>

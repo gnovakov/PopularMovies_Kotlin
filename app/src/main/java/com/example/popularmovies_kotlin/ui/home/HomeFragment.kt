@@ -1,70 +1,83 @@
 package com.example.popularmovies_kotlin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.popularmovies_kotlin.Const.BASE_IMAGE_SMALL
 import com.example.popularmovies_kotlin.R
-import com.example.popularmovies_kotlin.api.MovieApiFilter
-import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
+import com.example.popularmovies_kotlin.api.models.Movie
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
-    private val viewModel: HomeViewModel by lazy {
-        ViewModelProvider(this).get(HomeViewModel::class.java)
+    private lateinit var viewModel: HomeViewModel
+
+    private val adapter: MovieAdapter by lazy {
+        MovieAdapter()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        //Inflates the xml
-        val binding = FragmentHomeBinding.inflate(inflater)
-        //val binding = GridViewItemBinding.inflate(inflater)
+    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
+                               savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
+    }
 
-        // Allows Data Binding to Observe LiveData with the lifecycle of this Fragment
-        binding.setLifecycleOwner(this)
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        // Giving the binding access to the OverviewViewModel
-        binding.homeViewModel = viewModel
+        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
 
-        // Bind RecyclerView
-        binding.movieGrid.adapter = MovieAdapter(MovieAdapter.OnClickListener {
-            viewModel.displayMovieDetails(it) // Set the Movie to the _navigateToSelectedMovie Live Data
-        })
+        setupRecyclerView()
 
-        viewModel.navigateToSelectedMovie.observe(viewLifecycleOwner, Observer {
-            if(it != null) {
-                this.findNavController().navigate(
-                    HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)) //Open the Detail Fragment if _navigateToSelectedMovie is not Null
-                viewModel.displayMovieDetailsComplete() // Clear the _navigateToSelectedMovie after the Detail fragment is opened
+       //setHasOptionsMenu(true)
+
+        observeMovies()
+    }
+
+    private fun observeMovies() {
+        viewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Log.d("TAG", BASE_IMAGE_SMALL+it[0].poster_path)
+                showMovies(it)
             }
         })
-
-
-
-        setHasOptionsMenu(true)
-        return binding.root
     }
+
+    private fun showMovies(movies: List<Movie>) {
+        adapter.setData(movies)
+    }
+
+
+    private fun setupRecyclerView() {
+        movie_recycler_view.setHasFixedSize(true)
+        movie_recycler_view.layoutManager = GridLayoutManager(activity, 2)
+        movie_recycler_view.adapter = adapter
+    }
+
+
 
     /**
      * Inflates the overflow menu that contains filtering options.
      */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.overflow_menu, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        viewModel.updateFilter(
+//            when (item.itemId) {
+//                R.id.popular_movies -> MovieApiFilter.POPULAR_MOVIES
+//                R.id.top_rated_movies -> MovieApiFilter.TOP_RATED_MOVIES
+//                else -> MovieApiFilter.POPULAR_MOVIES
+//            }
+//        )
+//        return true
+//    }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.updateFilter(
-            when (item.itemId) {
-                R.id.popular_movies -> MovieApiFilter.POPULAR_MOVIES
-                R.id.top_rated_movies -> MovieApiFilter.TOP_RATED_MOVIES
-                else -> MovieApiFilter.POPULAR_MOVIES
-            }
-        )
-        return true
-    }
 
 
 }

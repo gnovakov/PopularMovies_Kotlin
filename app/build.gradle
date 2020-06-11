@@ -7,7 +7,7 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 android {
     compileSdkVersion 29
     dataBinding {
-        enabled = true
+        enabled = false
     }
 
     buildToolsVersion "29.0.3"
@@ -79,6 +79,9 @@ dependencies {
 
     // Glide Image Library
     implementation "com.github.bumptech.glide:glide:$version_glide"
+
+    // Picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

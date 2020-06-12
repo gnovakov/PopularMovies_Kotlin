@@ -17,9 +17,9 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
 
     // The most recent API response
-    private val _status = MutableLiveData<MovieApiStatus>()
-    val status: LiveData<MovieApiStatus>
-        get() = _status
+    private val _apiStatus = MutableLiveData<MovieApiStatus>()
+    val apiStatus: LiveData<MovieApiStatus>
+        get() = _apiStatus
 
     // A Movie
     private val _movies = MutableLiveData<List<Movie>>()
@@ -51,12 +51,12 @@ class HomeViewModel : ViewModel() {
                 .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
                     "false", "false", 1)
             try {
-                _status.value = MovieApiStatus.LOADING
+                _apiStatus.value = MovieApiStatus.LOADING
                 var apiResult = getMoviesDeferred.await()
-                _status.value = MovieApiStatus.DONE
+                _apiStatus.value = MovieApiStatus.DONE
                 _movies.value = apiResult.results
             } catch (e: Exception) {
-                _status.value = MovieApiStatus.ERROR
+                _apiStatus.value = MovieApiStatus.ERROR
                 _movies.value = ArrayList()
             }
         }

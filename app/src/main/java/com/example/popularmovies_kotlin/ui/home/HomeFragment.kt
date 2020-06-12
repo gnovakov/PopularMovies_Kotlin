@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.popularmovies_kotlin.Const.BASE_IMAGE_SMALL
 import com.example.popularmovies_kotlin.R
+import com.example.popularmovies_kotlin.api.MovieApiFilter
+import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -32,9 +34,31 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
 
-       //setHasOptionsMenu(true)
+       setHasOptionsMenu(true)
 
-        observeMovies()
+        observeApiStatus()
+    }
+
+    private fun observeApiStatus() {
+        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                when (it) {
+                    MovieApiStatus.LOADING -> {
+                        status_image.visibility = View.VISIBLE
+                        status_image.setImageResource(R.drawable.loading_animation)
+                    }
+                    MovieApiStatus.ERROR -> {
+                        status_image.visibility = View.VISIBLE
+                        status_image.setImageResource(R.drawable.ic_connection_error)
+                    }
+                    MovieApiStatus.DONE -> {
+                        status_image.visibility = View.GONE
+                        observeMovies()
+                    }
+
+                }
+            }
+        })
     }
 
     private fun observeMovies() {
@@ -46,8 +70,10 @@ class HomeFragment : Fragment() {
         })
     }
 
+
+
     private fun showMovies(movies: List<Movie>) {
-        adapter.setData(movies)
+        adapter.submitList(movies)
     }
 
 
@@ -62,21 +88,21 @@ class HomeFragment : Fragment() {
     /**
      * Inflates the overflow menu that contains filtering options.
      */
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.overflow_menu, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        viewModel.updateFilter(
-//            when (item.itemId) {
-//                R.id.popular_movies -> MovieApiFilter.POPULAR_MOVIES
-//                R.id.top_rated_movies -> MovieApiFilter.TOP_RATED_MOVIES
-//                else -> MovieApiFilter.POPULAR_MOVIES
-//            }
-//        )
-//        return true
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.overflow_menu, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        viewModel.updateFilter(
+            when (item.itemId) {
+                R.id.popular_movies -> MovieApiFilter.POPULAR_MOVIES
+                R.id.top_rated_movies -> MovieApiFilter.TOP_RATED_MOVIES
+                else -> MovieApiFilter.POPULAR_MOVIES
+            }
+        )
+        return true
+    }
 
 
 

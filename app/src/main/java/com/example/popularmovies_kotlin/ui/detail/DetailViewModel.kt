@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.popularmovies_kotlin.BuildConfig
 import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieServiceApi
+import com.example.popularmovies_kotlin.api.models.Cast
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
 import kotlinx.coroutines.CoroutineScope
@@ -23,19 +24,24 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
         get() = _selectedMovie
 
     // The most recent API response
-    private val _status = MutableLiveData<MovieApiStatus>()
-    val status: LiveData<MovieApiStatus>
-        get() = _status
+    private val _apiStatus = MutableLiveData<MovieApiStatus>()
+    val apiStatus: LiveData<MovieApiStatus>
+        get() = _apiStatus
+
+    // ID to get the Trailers and the Reviews.
+    private val _movieId = MutableLiveData<Int>()
+    val movieId: LiveData<Int>
+        get() = _movieId
 
     // A Trailer
     private val _trailers = MutableLiveData<List<Trailer>>()
     val trailers: LiveData<List<Trailer>>
         get() = _trailers
 
-    // ID to get the Trailers and the Reviews.
-    private val _movieId = MutableLiveData<Int>()
-    val movieId: LiveData<Int>
-        get() = _movieId
+    // A Trailer
+    private val _cast = MutableLiveData<List<Cast>>()
+    val cast: LiveData<List<Cast>>
+        get() = _cast
 
     private var viewModelJob = Job() // Coroutines Job
 
@@ -46,30 +52,56 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
 
     init {
         _selectedMovie.value = movie
-        _movieId.value = selectedMovie.value?.id
+        _movieId.value = movie.id
         movieId.value?.let { getTrailers(it) }
+        //movieId.value?.let { getCredits(it) }
     }
 
     private fun getTrailers(movieId: Int) {
 
         // Using Coroutines
         coroutineScope.launch {
-            var getTrailersDeferred = movieId?.let {
+            var getTrailersDeferred = movieId.let {
                 MovieServiceApi.retrofitService
                     .getTrailers(
                         it, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
             }
             try {
-                _status.value = MovieApiStatus.LOADING
-                var apiResult = getTrailersDeferred?.await()
-                _status.value = MovieApiStatus.DONE
-                _trailers.value = apiResult?.results
+                _apiStatus.value = MovieApiStatus.LOADING
+                Log.d("TAG", "MovieApiStatus LOADING")
+                var apiResult = getTrailersDeferred.await()
+                _apiStatus.value = MovieApiStatus.DONE
+                Log.d("TAG", "MovieApiStatus DONE")
+                _trailers.value = apiResult.results
             } catch (e: Exception) {
-                _status.value = MovieApiStatus.ERROR
+                _apiStatus.value = MovieApiStatus.ERROR
                 _trailers.value = ArrayList()
             }
         }
     }
+
+    /*private fun getCredits(movieId: Int) {
+
+        // Using Coroutines
+        coroutineScope.launch {
+            var getTrailersDeferred = movieId.let {
+                MovieServiceApi.retrofitService
+                    .getCredits(
+                        it, BuildConfig.MOVIE_DATA_BASE_API)
+            }
+            try {
+                _apiStatus.value = MovieApiStatus.LOADING
+                Log.d("TAG", "MovieApiStatus LOADING")
+                var apiResult = getTrailersDeferred.await()
+                _apiStatus.value = MovieApiStatus.DONE
+                Log.d("TAG", "MovieApiStatus DONE")
+                _trailers.value = apiResult.results
+            } catch (e: Exception) {
+                _apiStatus.value = MovieApiStatus.ERROR
+                _trailers.value = ArrayList()
+            }
+        }
+    }*/
 
 
 

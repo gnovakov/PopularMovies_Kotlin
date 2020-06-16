@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface MovieApi {
 
-    @GET("3/discover/movie")
+    @GET("discover/movie")
     fun getTopRatedMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
@@ -20,10 +20,16 @@ interface MovieApi {
         @Query("page") page: Int
     ): Deferred<MoviesResult>
 
-    @GET("3/movie/{MOVIE_ID}/videos")
+    @GET("movie/{MOVIE_ID}/videos")
     fun getTrailers(
         @Path("MOVIE_ID") movieId: Int,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Deferred<TrailersResult>
+
+    /*@GET("movie/{MOVIE_ID}/credits")
+    fun getCredits(
+        @Path("MOVIE_ID") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): Deferred<TrailersResult>*/
 }

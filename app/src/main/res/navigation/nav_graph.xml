@@ -18,7 +18,7 @@
         android:id="@+id/detailFragment"
         android:name="com.example.popularmovies_kotlin.ui.detail.DetailFragment"
         android:label="DetailFragment"
-        tools:layout="@layout/fragment_detail">
+        tools:layout="@layout/fragment_detail_old">
         <argument
             android:name="selectedMovie"
             app:argType="com.example.popularmovies_kotlin.api.models.Movie"

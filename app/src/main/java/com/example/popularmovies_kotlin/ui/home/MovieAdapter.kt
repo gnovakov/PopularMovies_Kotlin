@@ -13,7 +13,7 @@ import com.example.popularmovies_kotlin.api.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_grid_view_item.view.*
 
-class MovieAdapter() : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback) {
+class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_grid_view_item, parent, false)
@@ -22,14 +22,18 @@ class MovieAdapter() : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback
 
     override fun onBindViewHolder(holder: MovieHolder, position: Int) {
         val movies = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(movies)
+        }
         holder.bind(movies)
     }
 
     class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(movie: Movie) {
+
             val imgUrl = BASE_IMAGE_LARGE + movie.poster_path
-            imgUrl?.let {
+            imgUrl.let {
                 val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
                 Picasso.get()
                     .load(imgUri)
@@ -39,18 +43,22 @@ class MovieAdapter() : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback
             }
 
         }
-    }
 
+    }
 
     companion object DiffCallback : DiffUtil.ItemCallback<Movie>() {
 
         override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
-            return oldItem.id === newItem.id
+            return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
             return oldItem == newItem
         }
+    }
+
+    class OnClickListener(val clickListener: (movie: Movie) -> Unit) {
+        fun onClick(movie: Movie) = clickListener(movie)
     }
 
 }

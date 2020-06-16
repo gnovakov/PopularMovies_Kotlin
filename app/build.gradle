@@ -6,8 +6,9 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion 29
-    dataBinding {
-        enabled = false
+
+    buildFeatures{
+        dataBinding = false
     }
 
     buildToolsVersion "29.0.3"
@@ -55,8 +56,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
 
     // Navigation
-    implementation "android.arch.navigation:navigation-fragment-ktx:$version_navigation"
-    implementation "android.arch.navigation:navigation-ui-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
+    implementation "androidx.navigation:navigation-ui-ktx:$version_navigation"
 
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"

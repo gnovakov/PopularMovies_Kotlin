@@ -26,8 +26,6 @@ class HomeViewModel : ViewModel() {
     val movies: LiveData<List<Movie>>
         get() = _movies
 
-
-
     // Holds the selected property data
     private val _navigateToSelectedMovie = MutableLiveData<Movie>()
     val navigateToSelectedMovie: LiveData<Movie>
@@ -52,10 +50,13 @@ class HomeViewModel : ViewModel() {
                     "false", "false", 1)
             try {
                 _apiStatus.value = MovieApiStatus.LOADING
+                Log.d("TAG", "MovieApiStatus LOADING")
                 var apiResult = getMoviesDeferred.await()
                 _apiStatus.value = MovieApiStatus.DONE
+                Log.d("TAG", "MovieApiStatus DONE")
                 _movies.value = apiResult.results
             } catch (e: Exception) {
+                Log.d("TAG", "MovieApiStatus ERROR")
                 _apiStatus.value = MovieApiStatus.ERROR
                 _movies.value = ArrayList()
             }

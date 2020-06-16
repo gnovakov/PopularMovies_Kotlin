@@ -13,7 +13,7 @@ enum class MovieApiFilter(val value: String) {
     TOP_RATED_MOVIES("vote_count.desc")
 }
 
-private const val BASE_URL = "https://api.themoviedb.org/"
+private const val BASE_URL = "https://api.themoviedb.org/3/"
 
 // Instantiate Moshi
 private val moshi = Moshi.Builder()

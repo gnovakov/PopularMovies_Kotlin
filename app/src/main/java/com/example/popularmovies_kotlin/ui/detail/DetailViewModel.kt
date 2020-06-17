@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.BuildConfig
 import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieServiceApi
@@ -15,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
+class DetailViewModel(movie: Movie) : ViewModel() {
 
     // MutableLiveData that stores the selected movie
     private val _selectedMovie = MutableLiveData<Movie>()

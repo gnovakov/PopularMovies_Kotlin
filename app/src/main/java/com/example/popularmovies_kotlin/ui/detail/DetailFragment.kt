@@ -42,10 +42,8 @@ class DetailFragment : Fragment() {
 
         // Grab the selectedProperty from the safeargs
         val movie = DetailFragmentArgs.fromBundle(arguments!!).selectedMovie
-        // Application Context? Not sure why test later!!!!!!
-        val application = requireNotNull(activity).application
         // ViewModelFactory
-        val viewModelFactory = DetailViewModelFactory(movie, application)
+        val viewModelFactory = DetailViewModelFactory(movie)
         // Init View Model
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
 

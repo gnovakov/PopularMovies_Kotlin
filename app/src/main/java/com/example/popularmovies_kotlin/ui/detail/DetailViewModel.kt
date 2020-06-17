@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import com.example.popularmovies_kotlin.BuildConfig
 import com.example.popularmovies_kotlin.api.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieServiceApi
-import com.example.popularmovies_kotlin.api.models.Cast
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
 import kotlinx.coroutines.CoroutineScope
@@ -38,11 +37,6 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
     val trailers: LiveData<List<Trailer>>
         get() = _trailers
 
-    // A Trailer
-    private val _cast = MutableLiveData<List<Cast>>()
-    val cast: LiveData<List<Cast>>
-        get() = _cast
-
     private var viewModelJob = Job() // Coroutines Job
 
     // A coroutine scope for that new job using the main dispatcher
@@ -54,25 +48,24 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
         _selectedMovie.value = movie
         _movieId.value = movie.id
         movieId.value?.let { getTrailers(it) }
-        //movieId.value?.let { getCredits(it) }
     }
 
-    private fun getTrailers(movieId: Int) {
+    private fun getTrailers(id: Int) {
 
         // Using Coroutines
         coroutineScope.launch {
-            var getTrailersDeferred = movieId.let {
+            var getTrailersDeferred = id.let {
                 MovieServiceApi.retrofitService
                     .getTrailers(
                         it, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
             }
             try {
                 _apiStatus.value = MovieApiStatus.LOADING
-                Log.d("TAG", "MovieApiStatus LOADING")
-                var apiResult = getTrailersDeferred.await()
+                Log.d("TAG", "MovieApiStatus LOADING TRAILERS VM")
+                var apiResultTrailer = getTrailersDeferred.await()
                 _apiStatus.value = MovieApiStatus.DONE
-                Log.d("TAG", "MovieApiStatus DONE")
-                _trailers.value = apiResult.results
+                Log.d("TAG", "MovieApiStatus DONE TRAILERS VM")
+                _trailers.value = apiResultTrailer.results
             } catch (e: Exception) {
                 _apiStatus.value = MovieApiStatus.ERROR
                 _trailers.value = ArrayList()
@@ -80,29 +73,12 @@ class DetailViewModel(movie: Movie, app: Application) : AndroidViewModel(app) {
         }
     }
 
-    /*private fun getCredits(movieId: Int) {
-
-        // Using Coroutines
-        coroutineScope.launch {
-            var getTrailersDeferred = movieId.let {
-                MovieServiceApi.retrofitService
-                    .getCredits(
-                        it, BuildConfig.MOVIE_DATA_BASE_API)
-            }
-            try {
-                _apiStatus.value = MovieApiStatus.LOADING
-                Log.d("TAG", "MovieApiStatus LOADING")
-                var apiResult = getTrailersDeferred.await()
-                _apiStatus.value = MovieApiStatus.DONE
-                Log.d("TAG", "MovieApiStatus DONE")
-                _trailers.value = apiResult.results
-            } catch (e: Exception) {
-                _apiStatus.value = MovieApiStatus.ERROR
-                _trailers.value = ArrayList()
-            }
-        }
-    }*/
 
 
+    // Cancel the Coroutines Job
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 
 }

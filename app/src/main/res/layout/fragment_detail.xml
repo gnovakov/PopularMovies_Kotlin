@@ -149,7 +149,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/trailer_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="300dp"
             android:layout_marginStart="18dp"
             android:layout_marginLeft="18dp"
             android:layout_marginTop="10dp"
@@ -157,7 +157,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailers_title"
             tools:itemCount="16"
-            tools:listitem="@layout/trailer_grid_view_item" />
+            tools:listitem="@layout/trailer_grid_view_item"
+            />
 
         <ImageView
             android:id="@+id/status_image"

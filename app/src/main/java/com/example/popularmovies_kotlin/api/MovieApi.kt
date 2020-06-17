@@ -26,10 +26,4 @@ interface MovieApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Deferred<TrailersResult>
-
-    /*@GET("movie/{MOVIE_ID}/credits")
-    fun getCredits(
-        @Path("MOVIE_ID") movieId: Int,
-        @Query("api_key") apiKey: String
-    ): Deferred<TrailersResult>*/
 }

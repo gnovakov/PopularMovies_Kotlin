@@ -1,20 +1,18 @@
 package com.example.popularmovies_kotlin.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.BuildConfig
-import com.example.popularmovies_kotlin.api.MovieApiFilter
-import com.example.popularmovies_kotlin.api.MovieApiStatus
-import com.example.popularmovies_kotlin.api.MovieServiceApi
+import com.example.popularmovies_kotlin.MovieApiStatus
+import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewModel()  {
 
     // The most recent API response
     private val _apiStatus = MutableLiveData<MovieApiStatus>()
@@ -45,18 +43,16 @@ class HomeViewModel : ViewModel() {
     private fun getTopRatedMovies(filter: MovieApiFilter) {
         // Using Coroutines
         coroutineScope.launch {
-            var getMoviesDeferred = MovieServiceApi.retrofitService
-                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
-                    "false", "false", 1)
+            var getMoviesDeferred = movieRepo.getTopRatedMovies(filter)
+//            var getMoviesDeferred = MovieServiceApi.retrofitService
+//                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
+//                    "false", "false", 1)
             try {
                 _apiStatus.value = MovieApiStatus.LOADING
-                Log.d("TAG", "MovieApiStatus LOADING")
                 var apiResult = getMoviesDeferred.await()
                 _apiStatus.value = MovieApiStatus.DONE
-                Log.d("TAG", "MovieApiStatus DONE")
                 _movies.value = apiResult.results
             } catch (e: Exception) {
-                Log.d("TAG", "MovieApiStatus ERROR")
                 _apiStatus.value = MovieApiStatus.ERROR
                 _movies.value = ArrayList()
             }
@@ -82,4 +78,9 @@ class HomeViewModel : ViewModel() {
         super.onCleared()
         viewModelJob.cancel()
     }
+}
+
+enum class MovieApiFilter(val value: String) {
+    POPULAR_MOVIES("popularity.desc"),
+    TOP_RATED_MOVIES("vote_count.desc")
 }

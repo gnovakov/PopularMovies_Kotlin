@@ -13,6 +13,7 @@ buildscript {
         version_moshi = "1.8.0"
         version_kotlin_coroutines = "1.1.0"
         version_picasso = "2.71828"
+        version_dagger = "2.27"
     }
 
     repositories {

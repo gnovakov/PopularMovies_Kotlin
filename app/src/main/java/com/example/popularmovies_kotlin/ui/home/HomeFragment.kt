@@ -1,5 +1,6 @@
 package com.example.popularmovies_kotlin.ui.home
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -8,14 +9,19 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.popularmovies_kotlin.App
+import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.R
-import com.example.popularmovies_kotlin.api.MovieApiFilter
-import com.example.popularmovies_kotlin.api.MovieApiStatus
+import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.api.models.Movie
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
 class HomeFragment : Fragment() {
 
+
+    @Inject
+    internal lateinit var viewModelFactory: ViewModelFactory<HomeViewModel>
     private lateinit var viewModel: HomeViewModel
 
     private val adapter: MovieAdapter by lazy {
@@ -24,15 +30,24 @@ class HomeFragment : Fragment() {
         })
     }
 
-    override fun onCreateView( inflater: LayoutInflater, container: ViewGroup?,
-                               savedInstanceState: Bundle?): View? {
+    override fun onAttach(context: Context) {
+//        (application as App).appComponent.inject(this)
+        super.onAttach(context)
+        (requireActivity().application as App).appComponent.inject(this)
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                              savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+
+
+        //viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         setupRecyclerView()
 

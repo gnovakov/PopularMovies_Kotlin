@@ -1,22 +1,26 @@
 package com.example.popularmovies_kotlin.ui.detail
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.BuildConfig
-import com.example.popularmovies_kotlin.api.MovieApiStatus
-import com.example.popularmovies_kotlin.api.MovieServiceApi
+import com.example.popularmovies_kotlin.MovieApiStatus
+import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class DetailViewModel(movie: Movie) : ViewModel() {
+class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : ViewModel() {
+
+    fun onViewInit(movie: Movie) {
+        _selectedMovie.value = movie
+        _movieId.value = movie.id
+        movieId.value?.let { getTrailers(it) }
+    }
 
     // MutableLiveData that stores the selected movie
     private val _selectedMovie = MutableLiveData<Movie>()
@@ -44,22 +48,14 @@ class DetailViewModel(movie: Movie) : ViewModel() {
     private val coroutineScope = CoroutineScope(
         viewModelJob + Dispatchers.Main )
 
-
-    init {
-        _selectedMovie.value = movie
-        _movieId.value = movie.id
-        movieId.value?.let { getTrailers(it) }
-    }
-
     private fun getTrailers(id: Int) {
 
         // Using Coroutines
         coroutineScope.launch {
-            var getTrailersDeferred = id.let {
-                MovieServiceApi.retrofitService
-                    .getTrailers(
-                        it, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
-            }
+            var getTrailersDeferred = movieRepo.getTrailers(id)
+//                MovieServiceApi.retrofitService
+//                    .getTrailers(
+//                        id, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
             try {
                 _apiStatus.value = MovieApiStatus.LOADING
                 Log.d("TAG", "MovieApiStatus LOADING TRAILERS VM")

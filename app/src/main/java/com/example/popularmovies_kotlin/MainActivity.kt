@@ -2,7 +2,6 @@ package com.example.popularmovies_kotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 
 class  MainActivity : AppCompatActivity() {
 

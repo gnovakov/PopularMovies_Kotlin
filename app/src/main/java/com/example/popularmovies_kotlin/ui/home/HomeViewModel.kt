@@ -24,7 +24,7 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
     val movies: LiveData<List<Movie>>
         get() = _movies
 
-    // Holds the selected property data
+    // Holds the selected Movie data
     private val _navigateToSelectedMovie = MutableLiveData<Movie>()
     val navigateToSelectedMovie: LiveData<Movie>
         get() = _navigateToSelectedMovie
@@ -59,12 +59,12 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
         }
     }
 
-    // sets _navigateToSelectedProperty to the selected Mars property, when this is set the switch to detail page will happen
+    // sets _navigateToSelectedMovie to the selected Mars Movie, when this is set the switch to detail page will happen
     fun displayMovieDetails(movie: Movie) {
         _navigateToSelectedMovie.value = movie
     }
 
-    // sets _navigateToSelectedProperty back to null/resets it, this way when we return to overview page it doesn't automatically go back to the detail page
+    // sets _navigateToSelectedMovie back to null/resets it, this way when we return to overview page it doesn't automatically go back to the detail page
     fun displayMovieDetailsComplete() {
         _navigateToSelectedMovie.value = null
     }

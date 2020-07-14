@@ -53,7 +53,7 @@ class DetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         //AndroidSupportInjection.inject(this)
 
-        // Grab the selectedProperty from the safeargs
+        // Grab the selectedMovie from the safeargs
         val movie = DetailFragmentArgs.fromBundle(arguments!!).selectedMovie
         // ViewModelFactory
         //val viewModelFactory = DetailViewModelFactory(movie)

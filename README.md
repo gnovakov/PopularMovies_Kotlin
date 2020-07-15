@@ -7,7 +7,7 @@ This app utilizes core Android user interface components and fetches movie infor
 - Coroutines
 - Retrofit
 - Dagger 2
-- Navigation Library
+- Navigation Component
 - themoviedb.org API
 
 

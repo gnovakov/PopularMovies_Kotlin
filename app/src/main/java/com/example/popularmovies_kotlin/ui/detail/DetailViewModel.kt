@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
@@ -42,16 +43,9 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     val trailers: LiveData<List<Trailer>>
         get() = _trailers
 
-    private var viewModelJob = Job() // Coroutines Job
-
-    // A coroutine scope for that new job using the main dispatcher
-    private val coroutineScope = CoroutineScope(
-        viewModelJob + Dispatchers.Main )
-
     private fun getTrailers(id: Int) {
-
         // Using Coroutines
-        coroutineScope.launch {
+        viewModelScope.launch {
             var getTrailersDeferred = movieRepo.getTrailers(id)
 //                MovieServiceApi.retrofitService
 //                    .getTrailers(
@@ -68,14 +62,6 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
                 _trailers.value = ArrayList()
             }
         }
-    }
-
-
-
-    // Cancel the Coroutines Job
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 
 }

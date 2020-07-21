@@ -12,7 +12,7 @@ import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_END_URL
 import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_START_URL
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.api.models.Trailer
-import com.squareup.picasso.Picasso
+import com.example.popularmovies_kotlin.utils.loadImage
 import kotlinx.android.synthetic.main.trailer_grid_view_item.view.*
 
 class TrailerAdapter(private val onClickListener: OnClickListener) : ListAdapter<Trailer, TrailerAdapter.TrailerHolder>(DiffCallback) {
@@ -40,11 +40,7 @@ class TrailerAdapter(private val onClickListener: OnClickListener) : ListAdapter
             val imgUrl = YOUTUBE_THUMBNAIL_START_URL + trailer.key + YOUTUBE_THUMBNAIL_END_URL
             imgUrl.let {
                 val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-                Picasso.get()
-                    .load(imgUri)
-                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.ic_broken_image)
-                    .into(itemView.trailer_image)
+                itemView.trailer_image.loadImage(imgUri)
             }
 
         }

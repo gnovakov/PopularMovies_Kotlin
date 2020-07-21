@@ -22,7 +22,7 @@ import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
-import com.squareup.picasso.Picasso
+import com.example.popularmovies_kotlin.utils.loadImage
 import kotlinx.android.synthetic.main.fragment_detail.*
 import javax.inject.Inject
 
@@ -140,11 +140,7 @@ class DetailFragment : Fragment() {
         val imgUrl = BASE_IMAGE_LARGE + img
         imgUrl.let {
             val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-            Picasso.get()
-                .load(imgUri)
-                //.placeholder(R.drawable.loading_animation)
-                .error(R.drawable.ic_broken_image)
-                .into(imageView)
+            imageView.loadImage(imgUri)
         }
 
     }

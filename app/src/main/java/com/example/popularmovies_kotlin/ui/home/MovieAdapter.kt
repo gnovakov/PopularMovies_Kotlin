@@ -10,8 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.api.models.Trailer
-import com.squareup.picasso.Picasso
+import com.example.popularmovies_kotlin.utils.loadImage
 import kotlinx.android.synthetic.main.movie_grid_view_item.view.*
 
 class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback) {
@@ -36,11 +35,7 @@ class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<M
             val imgUrl = BASE_IMAGE_LARGE + movie.poster_path
             imgUrl.let {
                 val imgUri = imgUrl.toUri().buildUpon().scheme("https").build()
-                Picasso.get()
-                    .load(imgUri)
-                    .placeholder(R.drawable.loading_animation)
-                    .error(R.drawable.ic_broken_image)
-                    .into(itemView.movieImage)
+                itemView.movieImage.loadImage(imgUri)
             }
 
         }

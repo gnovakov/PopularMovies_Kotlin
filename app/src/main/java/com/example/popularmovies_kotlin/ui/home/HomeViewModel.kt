@@ -3,12 +3,10 @@ package com.example.popularmovies_kotlin.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,20 +27,13 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
     val navigateToSelectedMovie: LiveData<Movie>
         get() = _navigateToSelectedMovie
 
-    private var viewModelJob = Job() // Coroutines Job
-
-    // A coroutine scope for that new job using the main dispatcher
-    private val coroutineScope = CoroutineScope(
-        viewModelJob + Dispatchers.Main )
-
     init {
         getTopRatedMovies(MovieApiFilter.POPULAR_MOVIES)
     }
 
-
     private fun getTopRatedMovies(filter: MovieApiFilter) {
         // Using Coroutines
-        coroutineScope.launch {
+        viewModelScope.launch {
             var getMoviesDeferred = movieRepo.getTopRatedMovies(filter)
 //            var getMoviesDeferred = MovieServiceApi.retrofitService
 //                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
@@ -71,12 +62,6 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
 
     fun updateFilter(filter: MovieApiFilter) {
         getTopRatedMovies(filter)
-    }
-
-    // Cancel the Coroutines Job
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
     }
 }
 

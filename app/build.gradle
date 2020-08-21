@@ -35,6 +35,17 @@ android {
         }
     }
 
+    compileOptions {
+        // Java 8 Compatibility
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+
 }
 
 dependencies {
@@ -44,7 +55,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // AppCompat
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
 
     // Core with Ktx
     implementation "androidx.core:core-ktx:$version_core"
@@ -54,6 +65,7 @@ dependencies {
 
     // ViewModel and LiveData
     implementation "androidx.lifecycle:lifecycle-extensions:$version_lifecycle_extensions"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$version_lifecycle_extensions"
 
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$version_navigation"
@@ -64,8 +76,8 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
     // okHttp
-    implementation "com.squareup.okhttp3:logging-interceptor:4.4.0"
-    implementation "com.squareup.okhttp3:okhttp:4.4.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:$version_okhttp"
+    implementation "com.squareup.okhttp3:okhttp:$version_okhttp"
 
     // Moshi Library - Could also use Gson Library
     implementation "com.squareup.moshi:moshi:$version_moshi"
@@ -82,11 +94,6 @@ dependencies {
     implementation "com.squareup.picasso:picasso:$version_picasso"
 
     // dagger2
-//    implementation "com.google.dagger:dagger:$version_dagger"
-//    implementation "com.google.dagger:dagger-android:$version_dagger"
-//    implementation "com.google.dagger:dagger-android-support:$version_dagger"
-//    kapt "com.google.dagger:dagger-android-processor:$version_dagger"
-//    kapt "com.google.dagger:dagger-compiler:$version_dagger"
     implementation "com.google.dagger:dagger:$version_dagger"
     kapt "com.google.dagger:dagger-compiler:$version_dagger"
 

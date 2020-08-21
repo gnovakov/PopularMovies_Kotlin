@@ -54,7 +54,7 @@ class DetailFragment : Fragment() {
         //AndroidSupportInjection.inject(this)
 
         // Grab the selectedMovie from the safeargs
-        val movie = DetailFragmentArgs.fromBundle(arguments!!).selectedMovie
+        val movie = DetailFragmentArgs.fromBundle(requireArguments()).selectedMovie
         // ViewModelFactory
         //val viewModelFactory = DetailViewModelFactory(movie)
         // Init View Model

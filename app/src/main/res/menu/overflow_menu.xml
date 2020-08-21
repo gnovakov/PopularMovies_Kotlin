@@ -3,8 +3,8 @@
 
     <item
         android:id="@+id/popular_movies"
-        android:title="Popular Movies" />
+        android:title="@string/app_name" />
     <item
         android:id="@+id/top_rated_movies"
-        android:title="Top Rated" />
+        android:title="@string/top_rated" />
 </menu>

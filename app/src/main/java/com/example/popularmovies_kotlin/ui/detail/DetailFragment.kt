@@ -22,8 +22,12 @@ import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
+import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
+import com.example.popularmovies_kotlin.ui.home.HomeViewState
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
+import kotlinx.android.synthetic.main.fragment_detail.status_image
+import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class DetailFragment : Fragment() {
@@ -61,50 +65,39 @@ class DetailFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
         viewModel.onViewInit(movie)
 
-        setupRecyclerView() 
+        setupRecyclerView()
 
-        observeApiStatus()
+        observeviewState()
 
     }
 
-    private fun observeApiStatus() {
-        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                when (it) {
-                    MovieApiStatus.LOADING -> {
-                        Log.d("TAG", "LOADING DF")
-                        status_image.visibility = View.VISIBLE
-                        status_image.setImageResource(R.drawable.loading_animation)
-                    }
-                    MovieApiStatus.ERROR -> {
-                        Log.d("TAG", "ERROR DF")
-//                        status_image.visibility = View.VISIBLE
-//                        status_image.setImageResource(R.drawable.ic_connection_error)
-                    }
-                    MovieApiStatus.DONE -> {
-                        Log.d("TAG", "DONE DF")
-                        //status_image.visibility = View.GONE
-                        observeSelectedMovie()
-                        observeTrailers()
-                    }
+    private fun observeviewState() {
 
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Loading -> {
+                    Log.d("TAG", "LOADING DF")
+                    status_image.visibility = View.VISIBLE
+                    status_image.setImageResource(R.drawable.loading_animation)
                 }
+                is Error -> {
+                    Log.d("TAG", "ERROR")
+                }
+                is Presenting -> {
+                    Log.d("TAG", "DONE DF")
+                    observeSelectedMovie()
+                    showTrailers(it.results)
+                }
+
             }
         })
+
     }
 
     private fun observeSelectedMovie() {
         viewModel.selectedMovie.observe(viewLifecycleOwner, Observer {
             it?.let {
                 initialiseData(it)
-            }
-        })
-    }
-
-    private fun observeTrailers() {
-        viewModel.trailers.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                showTrailers(it)
             }
         })
     }

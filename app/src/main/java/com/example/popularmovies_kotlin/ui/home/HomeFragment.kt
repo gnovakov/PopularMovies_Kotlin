@@ -10,10 +10,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.popularmovies_kotlin.App
-import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.api.models.Movie
+import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -51,40 +51,30 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
 
-        observeApiStatus()
+        observeviewState()
         observeClick()
 
         setHasOptionsMenu(true)
     }
 
-    private fun observeApiStatus() {
-        viewModel.apiStatus.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                when (it) {
-                    MovieApiStatus.LOADING -> {
-                        Log.d("TAG", "LOADING")
-                        status_image.visibility = View.VISIBLE
-                        status_image.setImageResource(R.drawable.loading_animation)
-                    }
-                    MovieApiStatus.ERROR -> {
-                        Log.d("TAG", "ERROR")
-                        status_image.visibility = View.VISIBLE
-                        status_image.setImageResource(R.drawable.ic_connection_error)
-                    }
-                    MovieApiStatus.DONE -> {
-                        status_image.visibility = View.GONE
-                        observeMovies()
-                    }
-
+    private fun observeviewState() {
+        viewModel.viewState.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                is Loading -> {
+                    Log.d("TAG", "LOADING")
+                    status_image.visibility = View.VISIBLE
+                    status_image.setImageResource(R.drawable.loading_animation)
                 }
-            }
-        })
-    }
+                is Error -> {
+                    Log.d("TAG", "ERROR")
+                    status_image.visibility = View.VISIBLE
+                    status_image.setImageResource(R.drawable.ic_connection_error)
+                }
+                is Presenting -> {
+                    status_image.visibility = View.GONE
+                    showMovies(it.results)
+                }
 
-    private fun observeMovies() {
-        viewModel.movies.observe(viewLifecycleOwner, Observer {
-            it?.let {
-                showMovies(it)
             }
         })
     }

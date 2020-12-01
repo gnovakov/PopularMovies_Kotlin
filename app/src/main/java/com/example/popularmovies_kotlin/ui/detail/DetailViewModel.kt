@@ -8,6 +8,8 @@ import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
+import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
+import com.example.popularmovies_kotlin.ui.home.HomeViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -26,6 +28,11 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     private val _selectedMovie = MutableLiveData<Movie>()
     val selectedMovie: LiveData<Movie>
         get() = _selectedMovie
+
+    // View State
+    private val _viewState = MutableLiveData<DetailViewState>()
+    val viewState: LiveData<DetailViewState>
+        get() = _viewState
 
     // The most recent API response
     private val _apiStatus = MutableLiveData<MovieApiStatus>()
@@ -48,30 +55,40 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     private val coroutineScope = CoroutineScope(
         viewModelJob + Dispatchers.Main )
 
-    private fun getTrailers(id: Int) {
+//    private fun getTrailers(id: Int) {
+//
+//        // Using Coroutines
+//        coroutineScope.launch {
+//            var getTrailersDeferred = movieRepo.getTrailers(id)
+//
+//            try {
+//                _apiStatus.value = MovieApiStatus.LOADING
+//                Log.d("TAG", "MovieApiStatus LOADING TRAILERS VM")
+//                var apiResultTrailer = getTrailersDeferred.await()
+//                _apiStatus.value = MovieApiStatus.DONE
+//                Log.d("TAG", "MovieApiStatus DONE TRAILERS VM")
+//                _trailers.value = apiResultTrailer.results
+//            } catch (e: Exception) {
+//                _apiStatus.value = MovieApiStatus.ERROR
+//                _trailers.value = ArrayList()
+//            }
+//        }
+//    }
 
+    private fun getTrailers(id: Int) {
         // Using Coroutines
         coroutineScope.launch {
             var getTrailersDeferred = movieRepo.getTrailers(id)
-//                MovieServiceApi.retrofitService
-//                    .getTrailers(
-//                        id, BuildConfig.MOVIE_DATA_BASE_API, "en-us")
+
             try {
-                _apiStatus.value = MovieApiStatus.LOADING
-                Log.d("TAG", "MovieApiStatus LOADING TRAILERS VM")
+                _viewState.value = Loading
                 var apiResultTrailer = getTrailersDeferred.await()
-                _apiStatus.value = MovieApiStatus.DONE
-                Log.d("TAG", "MovieApiStatus DONE TRAILERS VM")
-                _trailers.value = apiResultTrailer.results
+                _viewState.value = Presenting(apiResultTrailer.results)
             } catch (e: Exception) {
-                _apiStatus.value = MovieApiStatus.ERROR
-                _trailers.value = ArrayList()
+                _viewState.value = Error
             }
         }
     }
-
-
-
     // Cancel the Coroutines Job
     override fun onCleared() {
         super.onCleared()

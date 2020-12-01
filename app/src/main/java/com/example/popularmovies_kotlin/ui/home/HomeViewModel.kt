@@ -3,9 +3,9 @@ package com.example.popularmovies_kotlin.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
+import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -14,15 +14,11 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewModel()  {
 
-    // The most recent API response
-    private val _apiStatus = MutableLiveData<MovieApiStatus>()
-    val apiStatus: LiveData<MovieApiStatus>
-        get() = _apiStatus
 
-    // A Movie
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>>
-        get() = _movies
+    // View State
+    private val _viewState = MutableLiveData<HomeViewState>()
+    val viewState: LiveData<HomeViewState>
+        get() = _viewState
 
     // Holds the selected Movie data
     private val _navigateToSelectedMovie = MutableLiveData<Movie>()
@@ -44,17 +40,12 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
         // Using Coroutines
         coroutineScope.launch {
             var getMoviesDeferred = movieRepo.getTopRatedMovies(filter)
-//            var getMoviesDeferred = MovieServiceApi.retrofitService
-//                .getTopRatedMovies(BuildConfig.MOVIE_DATA_BASE_API, "en-us", filter.value,
-//                    "false", "false", 1)
             try {
-                _apiStatus.value = MovieApiStatus.LOADING
+                _viewState.value = Loading
                 var apiResult = getMoviesDeferred.await()
-                _apiStatus.value = MovieApiStatus.DONE
-                _movies.value = apiResult.results
+                _viewState.value = Presenting(apiResult.results)
             } catch (e: Exception) {
-                _apiStatus.value = MovieApiStatus.ERROR
-                _movies.value = ArrayList()
+                _viewState.value = Error
             }
         }
     }

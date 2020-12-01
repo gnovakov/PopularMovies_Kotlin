@@ -31,7 +31,6 @@ class HomeFragment : Fragment() {
     }
 
     override fun onAttach(context: Context) {
-//        (application as App).appComponent.inject(this)
         super.onAttach(context)
         (requireActivity().application as App).appComponent.inject(this)
     }
@@ -46,7 +45,6 @@ class HomeFragment : Fragment() {
 
 
 
-        //viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         setupRecyclerView()

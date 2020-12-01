@@ -1,15 +1,11 @@
 package com.example.popularmovies_kotlin.ui.detail
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.api.models.Trailer
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
-import com.example.popularmovies_kotlin.ui.home.HomeViewState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -34,46 +30,16 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     val viewState: LiveData<DetailViewState>
         get() = _viewState
 
-    // The most recent API response
-    private val _apiStatus = MutableLiveData<MovieApiStatus>()
-    val apiStatus: LiveData<MovieApiStatus>
-        get() = _apiStatus
-
     // ID to get the Trailers and the Reviews.
     private val _movieId = MutableLiveData<Int>()
     val movieId: LiveData<Int>
         get() = _movieId
-
-    // A Trailer
-    private val _trailers = MutableLiveData<List<Trailer>>()
-    val trailers: LiveData<List<Trailer>>
-        get() = _trailers
 
     private var viewModelJob = Job() // Coroutines Job
 
     // A coroutine scope for that new job using the main dispatcher
     private val coroutineScope = CoroutineScope(
         viewModelJob + Dispatchers.Main )
-
-//    private fun getTrailers(id: Int) {
-//
-//        // Using Coroutines
-//        coroutineScope.launch {
-//            var getTrailersDeferred = movieRepo.getTrailers(id)
-//
-//            try {
-//                _apiStatus.value = MovieApiStatus.LOADING
-//                Log.d("TAG", "MovieApiStatus LOADING TRAILERS VM")
-//                var apiResultTrailer = getTrailersDeferred.await()
-//                _apiStatus.value = MovieApiStatus.DONE
-//                Log.d("TAG", "MovieApiStatus DONE TRAILERS VM")
-//                _trailers.value = apiResultTrailer.results
-//            } catch (e: Exception) {
-//                _apiStatus.value = MovieApiStatus.ERROR
-//                _trailers.value = ArrayList()
-//            }
-//        }
-//    }
 
     private fun getTrailers(id: Int) {
         // Using Coroutines

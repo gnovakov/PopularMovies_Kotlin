@@ -17,17 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.popularmovies_kotlin.App
 import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.Const.YOUTUBE_TRAILER_BASE_URL
-import com.example.popularmovies_kotlin.MovieApiStatus
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.api.models.Trailer
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
-import com.example.popularmovies_kotlin.ui.home.HomeViewState
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.status_image
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class DetailFragment : Fragment() {
@@ -55,12 +52,10 @@ class DetailFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        //AndroidSupportInjection.inject(this)
 
         // Grab the selectedMovie from the safeargs
         val movie = DetailFragmentArgs.fromBundle(requireArguments()).selectedMovie
-        // ViewModelFactory
-        //val viewModelFactory = DetailViewModelFactory(movie)
+
         // Init View Model
         viewModel = ViewModelProvider(this, viewModelFactory).get(DetailViewModel::class.java)
         viewModel.onViewInit(movie)

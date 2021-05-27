@@ -20,4 +20,4 @@ This app utilizes the themoviedb.org web API core Android user interface compone
     - LiveData (For notifying views of data changes)
 - Picasso (For displaying images)
 - Architecture
-    - MVVM (Used in Presentation Layer)
+    - MVVM

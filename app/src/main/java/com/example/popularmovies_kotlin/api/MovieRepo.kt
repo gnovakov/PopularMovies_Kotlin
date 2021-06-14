@@ -4,6 +4,7 @@ import com.example.popularmovies_kotlin.BuildConfig
 import com.example.popularmovies_kotlin.api.models.MoviesResult
 import com.example.popularmovies_kotlin.api.models.TrailersResult
 import com.example.popularmovies_kotlin.ui.home.MovieApiFilter
+import com.gnova.data.api.MovieApi
 import kotlinx.coroutines.Deferred
 import javax.inject.Inject
 

@@ -1,9 +1,8 @@
-package com.example.popularmovies_kotlin.api
+package com.gnova.data.api
 
-import com.example.popularmovies_kotlin.api.models.MoviesResult
-import com.example.popularmovies_kotlin.api.models.TrailersResult
+import com.gnova.data.api.response.MovieResponse
+import com.gnova.data.api.response.TrailersResponse
 import kotlinx.coroutines.Deferred
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -18,12 +17,12 @@ interface MovieApi {
         @Query("include_adult") include_adult: String,
         @Query("include_video") include_video: String,
         @Query("page") page: Int
-    ): Deferred<MoviesResult>
+    ): Deferred<MovieResponse>
 
     @GET("movie/{MOVIE_ID}/videos")
     fun getTrailers(
         @Path("MOVIE_ID") movieId: Int,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
-    ): Deferred<TrailersResult>
+    ): Deferred<TrailersResponse>
 }

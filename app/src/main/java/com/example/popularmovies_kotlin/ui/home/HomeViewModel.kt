@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
+import com.gnova.data.repositories.MovieRepoImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewModel()  {
+class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl): ViewModel()  {
 
 
     // View State
@@ -39,7 +40,7 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
     private fun getTopRatedMovies(filter: MovieApiFilter) {
         // Using Coroutines
         coroutineScope.launch {
-            var getMoviesDeferred = movieRepo.getTopRatedMovies(filter)
+            var getMoviesDeferred = movieRepoImpl.getTopRatedMovies(filter)
             try {
                 _viewState.value = Loading
                 var apiResult = getMoviesDeferred.await()

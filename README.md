@@ -13,7 +13,7 @@ This app utilizes the themoviedb.org web API core Android user interface compone
 
 - Kotlin
 - Dagger 2 (For Dependency Injection)
-- Coroutines (For Managing Background Tasks)
+- rxJava (For Managing Background Tasks)
 - Retrofit (For Networking)
 - JetPack
     - ViewModel (For managing UI related data in a lifecycle conscious way)

@@ -6,6 +6,11 @@ import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
+import com.example.popularmovies_kotlin.ui.home.HomeViewState
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -35,30 +40,26 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     val movieId: LiveData<Int>
         get() = _movieId
 
-    private var viewModelJob = Job() // Coroutines Job
-
-    // A coroutine scope for that new job using the main dispatcher
-    private val coroutineScope = CoroutineScope(
-        viewModelJob + Dispatchers.Main )
 
     private fun getTrailers(id: Int) {
-        // Using Coroutines
-        coroutineScope.launch {
-            var getTrailersDeferred = movieRepo.getTrailers(id)
+        _viewState.value = Loading
+        add(
+            movieRepo.getTrailers(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _viewState.value = Presenting(it.results)
+                }, {
+                    _viewState.value = Error
+                }
 
-            try {
-                _viewState.value = Loading
-                var apiResultTrailer = getTrailersDeferred.await()
-                _viewState.value = Presenting(apiResultTrailer.results)
-            } catch (e: Exception) {
-                _viewState.value = Error
-            }
-        }
+                ))
     }
-    // Cancel the Coroutines Job
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
+
+    val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
+
+    protected fun add(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
 
 }

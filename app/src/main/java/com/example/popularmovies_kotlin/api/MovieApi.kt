@@ -2,6 +2,7 @@ package com.example.popularmovies_kotlin.api
 
 import com.example.popularmovies_kotlin.api.models.MoviesResult
 import com.example.popularmovies_kotlin.api.models.TrailersResult
+import io.reactivex.Single
 import kotlinx.coroutines.Deferred
 import retrofit2.Call
 import retrofit2.http.GET
@@ -18,12 +19,12 @@ interface MovieApi {
         @Query("include_adult") include_adult: String,
         @Query("include_video") include_video: String,
         @Query("page") page: Int
-    ): Deferred<MoviesResult>
+    ): Single<MoviesResult>
 
     @GET("movie/{MOVIE_ID}/videos")
     fun getTrailers(
         @Path("MOVIE_ID") movieId: Int,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
-    ): Deferred<TrailersResult>
+    ): Single<TrailersResult>
 }

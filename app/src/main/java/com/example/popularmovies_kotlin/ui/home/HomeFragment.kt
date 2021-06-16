@@ -44,15 +44,18 @@ class HomeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
 
-
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
 
         setupRecyclerView()
+
+        viewModel.onViewLoaded()
 
         observeviewState()
         observeClick()
 
         setHasOptionsMenu(true)
+
+
     }
 
     private fun observeviewState() {

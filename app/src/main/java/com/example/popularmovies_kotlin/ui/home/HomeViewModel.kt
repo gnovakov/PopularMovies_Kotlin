@@ -1,15 +1,16 @@
 package com.example.popularmovies_kotlin.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.popularmovies_kotlin.api.MovieRepo
 import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewModel()  {
@@ -25,29 +26,24 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
     val navigateToSelectedMovie: LiveData<Movie>
         get() = _navigateToSelectedMovie
 
-    private var viewModelJob = Job() // Coroutines Job
-
-    // A coroutine scope for that new job using the main dispatcher
-    private val coroutineScope = CoroutineScope(
-        viewModelJob + Dispatchers.Main )
 
     fun onViewLoaded() {
         getTopRatedMovies(MovieApiFilter.POPULAR_MOVIES)
     }
 
-
     private fun getTopRatedMovies(filter: MovieApiFilter) {
-        // Using Coroutines
-        coroutineScope.launch {
-            var getMoviesDeferred = movieRepo.getTopRatedMovies(filter)
-            try {
-                _viewState.value = Loading
-                var apiResult = getMoviesDeferred.await()
-                _viewState.value = Presenting(apiResult.results)
-            } catch (e: Exception) {
-                _viewState.value = Error
-            }
-        }
+        _viewState.value = Loading
+        add(
+            movieRepo.getTopRatedMovies(filter)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    _viewState.value = Presenting(it.results)
+                }, {
+                    _viewState.value = Error
+                }
+
+                ))
     }
 
     // sets _navigateToSelectedMovie to the selected Mars Movie, when this is set the switch to detail page will happen
@@ -64,11 +60,12 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
         getTopRatedMovies(filter)
     }
 
-    // Cancel the Coroutines Job
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
+    val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
+
+    protected fun add(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
+
 }
 
 enum class MovieApiFilter(val value: String) {

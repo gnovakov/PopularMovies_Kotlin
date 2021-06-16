@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
     private val coroutineScope = CoroutineScope(
         viewModelJob + Dispatchers.Main )
 
-    init {
+    fun onViewLoaded() {
         getTopRatedMovies(MovieApiFilter.POPULAR_MOVIES)
     }
 

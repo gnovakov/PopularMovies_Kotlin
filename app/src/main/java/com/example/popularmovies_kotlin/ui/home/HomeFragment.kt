@@ -49,6 +49,8 @@ class HomeFragment : Fragment() {
 
         setupRecyclerView()
 
+        viewModel.onViewLoaded()
+
         observeviewState()
         observeClick()
 

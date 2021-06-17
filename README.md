@@ -27,10 +27,10 @@ This app utilizes the themoviedb.org web API core Android user interface compone
 
 To preview the app please download your own API key from themoviedb.org
 
-Create a Const file in the util folder in data/src/main/java/com/gnova/data/util and put your API key there like so:
+Create a Constants file in the util folder in data/src/main/java/com/gnova/data/util and put your API key there like so:
 
 ```Kotlin
-object Const {
+object Constants {
 
     const val API_KEY =  "yourApiKeyHere"
 }

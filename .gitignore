@@ -83,4 +83,4 @@ lint/tmp/
 # lint/reports/
 
 # apiKey
-data/src/main/java/com/gnova/data/util/Const.kt
+data/src/main/java/com/gnova/data/util/Constants.kt

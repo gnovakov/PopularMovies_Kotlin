@@ -3,7 +3,7 @@ package com.gnova.data.repositories
 import com.gnova.data.api.MovieApi
 import com.gnova.data.mappers.MovieDTOMapper
 import com.gnova.data.mappers.TrailerDTOMapper
-import com.gnova.data.util.Const.API_KEY
+import com.gnova.data.util.Constants.API_KEY
 import com.gnova.domain.models.Movie
 import com.gnova.domain.models.Trailer
 import com.gnova.domain.repositories.MovieRepo

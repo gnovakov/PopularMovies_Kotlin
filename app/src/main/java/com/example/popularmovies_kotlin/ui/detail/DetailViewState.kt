@@ -1,6 +1,7 @@
 package com.example.popularmovies_kotlin.ui.detail
 
-import com.example.popularmovies_kotlin.api.models.Trailer
+import com.gnova.domain.models.Trailer
+
 
 sealed class DetailViewState {
 

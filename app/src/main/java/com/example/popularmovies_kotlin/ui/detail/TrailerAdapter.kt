@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_END_URL
 import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_START_URL
 import com.example.popularmovies_kotlin.R
-import com.example.popularmovies_kotlin.api.models.Trailer
+import com.gnova.domain.models.Trailer
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.trailer_grid_view_item.view.*
 

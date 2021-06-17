@@ -1,19 +1,18 @@
 package com.example.popularmovies_kotlin.ui.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.api.MovieRepo
-import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
+import com.gnova.data.repositories.MovieRepoImpl
+import com.gnova.domain.models.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewModel()  {
+class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl): ViewModel()  {
 
 
     // View State
@@ -28,17 +27,18 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
 
 
     fun onViewLoaded() {
-        getTopRatedMovies(MovieApiFilter.POPULAR_MOVIES)
+        getTopRatedMovies()
     }
 
-    private fun getTopRatedMovies(filter: MovieApiFilter) {
+    private fun getTopRatedMovies() {
+
         _viewState.value = Loading
         add(
-            movieRepo.getTopRatedMovies(filter)
+            movieRepoImpl.getTopRatedMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _viewState.value = Presenting(it.results)
+                    _viewState.value = Presenting(it)
                 }, {
                     _viewState.value = Error
                 }
@@ -56,19 +56,15 @@ class HomeViewModel @Inject constructor(private val movieRepo: MovieRepo): ViewM
         _navigateToSelectedMovie.value = null
     }
 
-    fun updateFilter(filter: MovieApiFilter) {
-        getTopRatedMovies(filter)
-    }
-
     val compositeDisposable: CompositeDisposable by lazy { CompositeDisposable() }
 
     protected fun add(disposable: Disposable) {
         compositeDisposable.add(disposable)
     }
 
-}
+    override fun onCleared() {
+        super.onCleared()
+        compositeDisposable.clear()
+    }
 
-enum class MovieApiFilter(val value: String) {
-    POPULAR_MOVIES("popularity.desc"),
-    TOP_RATED_MOVIES("vote_count.desc")
 }

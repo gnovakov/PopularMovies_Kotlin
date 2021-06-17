@@ -20,4 +20,19 @@ This app utilizes the themoviedb.org web API core Android user interface compone
     - LiveData (For notifying views of data changes)
 - Picasso (For displaying images)
 - Architecture
+    - Clean Architecture
     - MVVM
+
+### *How to preview the app
+
+To preview the app please download your own API key from themoviedb.org
+
+Create a Const file in the util folder in data/src/main/java/com/gnova/data/util and put your API key there like so:
+
+```Kotlin
+object Const {
+
+    const val API_KEY =  "yourApiKeyHere"
+}
+
+```

@@ -1,2 +1,4 @@
+include ':domain'
+include ':data'
 rootProject.name='PopularMovies_Kotlin'
 include ':app'

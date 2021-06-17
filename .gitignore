@@ -81,3 +81,6 @@ lint/generated/
 lint/outputs/
 lint/tmp/
 # lint/reports/
+
+# apiKey
+data/src/main/java/com/gnova/data/util/Const.kt

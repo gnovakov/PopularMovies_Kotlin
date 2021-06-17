@@ -1,12 +1,9 @@
 package com.example.popularmovies_kotlin.di.modules
 
-import android.app.Application
-import com.example.popularmovies_kotlin.api.MovieApi
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import com.gnova.data.api.MovieApi
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
-import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

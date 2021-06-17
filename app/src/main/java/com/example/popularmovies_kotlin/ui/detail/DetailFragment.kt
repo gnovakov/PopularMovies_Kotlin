@@ -19,9 +19,9 @@ import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.Const.YOUTUBE_TRAILER_BASE_URL
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
-import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.api.models.Trailer
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
+import com.gnova.domain.models.Movie
+import com.gnova.domain.models.Trailer
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.status_image

@@ -9,8 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.R
-import com.example.popularmovies_kotlin.api.models.Movie
-import com.example.popularmovies_kotlin.api.models.Trailer
+import com.gnova.domain.models.Movie
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.movie_grid_view_item.view.*
 

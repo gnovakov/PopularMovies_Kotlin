@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.popularmovies_kotlin.App
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
-import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
+import com.gnova.domain.models.Movie
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
@@ -52,8 +52,6 @@ class HomeFragment : Fragment() {
 
         observeviewState()
         observeClick()
-
-        setHasOptionsMenu(true)
 
 
     }
@@ -107,24 +105,6 @@ class HomeFragment : Fragment() {
 
 
 
-    /**
-     * Inflates the overflow menu that contains filtering options.
-     */
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        viewModel.updateFilter(
-            when (item.itemId) {
-                R.id.popular_movies -> MovieApiFilter.POPULAR_MOVIES
-                R.id.top_rated_movies -> MovieApiFilter.TOP_RATED_MOVIES
-                else -> MovieApiFilter.POPULAR_MOVIES
-            }
-        )
-        return true
-    }
 
 
 

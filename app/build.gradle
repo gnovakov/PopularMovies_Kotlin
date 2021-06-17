@@ -25,13 +25,13 @@ android {
 
     buildTypes {
         debug {
-            it.buildConfigField 'String', 'MOVIE_DATA_BASE_API', MovieDbAPIKey
+            //it.buildConfigField 'String', 'MOVIE_DATA_BASE_API', MovieDbAPIKey
 
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            it.buildConfigField 'String', 'MOVIE_DATA_BASE_API', MovieDbAPIKey
+            //it.buildConfigField 'String', 'MOVIE_DATA_BASE_API', MovieDbAPIKey
         }
     }
 
@@ -88,9 +88,6 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:$version_rxandroid"
     implementation "io.reactivex.rxjava2:rxkotlin:$version_rxkotlin"
 
-    // Retrofit Courutines adapter
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$version_retrofit_coroutines_adapter"
-
     // Picasso Image Library
     implementation "com.squareup.picasso:picasso:$version_picasso"
 
@@ -101,4 +98,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    implementation project(':data')
+    implementation project(':domain')
 }

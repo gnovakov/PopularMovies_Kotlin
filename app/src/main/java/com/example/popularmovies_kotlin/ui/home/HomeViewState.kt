@@ -1,6 +1,7 @@
 package com.example.popularmovies_kotlin.ui.home
 
-import com.example.popularmovies_kotlin.api.models.Movie
+import com.gnova.domain.models.Movie
+
 
 sealed class HomeViewState {
 

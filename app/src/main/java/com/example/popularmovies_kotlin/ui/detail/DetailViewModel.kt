@@ -3,21 +3,17 @@ package com.example.popularmovies_kotlin.ui.detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.popularmovies_kotlin.api.MovieRepo
-import com.example.popularmovies_kotlin.api.models.Movie
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
-import com.example.popularmovies_kotlin.ui.home.HomeViewState
+import com.gnova.data.repositories.MovieRepoImpl
+import com.gnova.domain.models.Movie
+import com.gnova.domain.repositories.MovieRepo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : ViewModel() {
+class DetailViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl) : ViewModel() {
 
     fun onViewInit(movie: Movie) {
         _selectedMovie.value = movie
@@ -44,11 +40,11 @@ class DetailViewModel @Inject constructor(private val movieRepo: MovieRepo) : Vi
     private fun getTrailers(id: Int) {
         _viewState.value = Loading
         add(
-            movieRepo.getTrailers(id)
+            movieRepoImpl.getTrailers(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    _viewState.value = Presenting(it.results)
+                    _viewState.value = Presenting(it)
                 }, {
                     _viewState.value = Error
                 }

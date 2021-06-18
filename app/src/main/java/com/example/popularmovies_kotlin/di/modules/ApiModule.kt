@@ -1,5 +1,6 @@
 package com.example.popularmovies_kotlin.di.modules
 
+import com.example.popularmovies_kotlin.Const.BASE_URL
 import com.gnova.data.api.MovieApi
 import dagger.Module
 import dagger.Provides
@@ -19,7 +20,7 @@ class ApiModule {
     fun providesRetrofit(
                          okHttpClient: OkHttpClient.Builder): MovieApi =
         Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
+            .baseUrl(BASE_URL)
             .client(
                 okHttpClient
                     .build()

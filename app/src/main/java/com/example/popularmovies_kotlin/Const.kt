@@ -15,4 +15,6 @@ object Const {
     const val YOUTUBE_THUMBNAIL_START_URL: String = "https://img.youtube.com/vi/"
     const val YOUTUBE_THUMBNAIL_END_URL: String = "/0.jpg"
     const val YOUTUBE_TRAILER_BASE_URL = "https://www.youtube.com/watch?v="
+
+    const val BASE_URL = "https://api.themoviedb.org/3/"
 }

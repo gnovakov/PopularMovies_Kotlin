@@ -6,7 +6,7 @@ import io.reactivex.Single
 
 interface MovieRepo {
 
-    fun getTopRatedMovies(): Single<List<Movie>>
+    fun getTopRatedMovies(sort: String): Single<List<Movie>>
 
     fun getTrailers(id: Int): Single<List<Trailer>>
 

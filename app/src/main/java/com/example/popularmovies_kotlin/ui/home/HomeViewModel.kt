@@ -1,5 +1,6 @@
 package com.example.popularmovies_kotlin.ui.home
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -27,19 +28,21 @@ class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl
 
 
     fun onViewLoaded() {
-        getTopRatedMovies()
+        getTopRatedMovies("vote_count.desc")
     }
 
-    private fun getTopRatedMovies() {
+
+    private fun getTopRatedMovies(sort : String) {
 
         _viewState.value = Loading
         add(
-            movieRepoImpl.getTopRatedMovies()
+            movieRepoImpl.getTopRatedMovies(sort)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     _viewState.value = Presenting(it)
                 }, {
+                    Log.d("TAG", "ERROR HOME VM")
                     _viewState.value = Error
                 }
 

@@ -32,7 +32,6 @@ class DetailFragment : Fragment() {
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory<DetailViewModel>
     private lateinit var viewModel: DetailViewModel
-
     private val trailerAdapter: TrailerAdapter by lazy {
         TrailerAdapter(TrailerAdapter.OnClickListener {
             trailerClick(it)

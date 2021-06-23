@@ -23,7 +23,6 @@ class HomeFragment : Fragment() {
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory<HomeViewModel>
     private lateinit var viewModel: HomeViewModel
-
     private val adapter: MovieAdapter by lazy {
         MovieAdapter(MovieAdapter.OnClickListener {
             viewModel.displayMovieDetails(it) // Set the Movie to the _navigateToSelectedMovie Live Data
@@ -65,7 +64,7 @@ class HomeFragment : Fragment() {
                     status_image.setImageResource(R.drawable.loading_animation)
                 }
                 is Error -> {
-                    Log.d("TAG", "ERROR")
+                    Log.d("TAG", "ERROR HOME FRAGMENT")
                     status_image.visibility = View.VISIBLE
                     status_image.setImageResource(R.drawable.ic_connection_error)
                 }

@@ -12,12 +12,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.popularmovies_kotlin.App
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
+import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
 import com.gnova.domain.models.Movie
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     @Inject
@@ -29,18 +30,14 @@ class HomeFragment : Fragment() {
         })
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as App).appComponent.inject(this)
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        val binding = FragmentHomeBinding.bind(view)
+        _binding = binding
 
 
         viewModel = ViewModelProvider(this, viewModelFactory).get(HomeViewModel::class.java)
@@ -104,7 +101,9 @@ class HomeFragment : Fragment() {
 
 
 
-
-
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
 
 }

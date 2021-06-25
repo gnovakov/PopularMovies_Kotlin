@@ -13,15 +13,15 @@ interface MovieApi {
     fun getTopRatedMovies(
         @Query("api_key") apiKey: String,
         @Query("language") language: String,
-        @Query("sort_by") sort_by: String,
-        @Query("include_adult") include_adult: String,
-        @Query("include_video") include_video: String,
+        @Query("sort_by") sortBy: String,
+        @Query("include_adult") includeAdult: String,
+        @Query("include_video") includeVideo: String,
         @Query("page") page: Int
     ): Single<MovieResponse>
 
-    @GET("movie/{MOVIE_ID}/videos")
+    @GET("movie/{movie_id}/videos")
     fun getTrailers(
-        @Path("MOVIE_ID") movieId: Int,
+        @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String,
         @Query("language") language: String
     ): Single<TrailersResponse>

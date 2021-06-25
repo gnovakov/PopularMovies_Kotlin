@@ -32,11 +32,11 @@ class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl
     }
 
 
-    private fun getTopRatedMovies(sort : String) {
+    private fun getTopRatedMovies(sortBy : String) {
 
         _viewState.value = Loading
         add(
-            movieRepoImpl.getTopRatedMovies(sort)
+            movieRepoImpl.getTopRatedMovies(sortBy)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({

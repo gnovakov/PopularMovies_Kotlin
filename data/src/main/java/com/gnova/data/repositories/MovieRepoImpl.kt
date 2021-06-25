@@ -16,9 +16,9 @@ class MovieRepoImpl@Inject constructor(
     private val trailerMapper: TrailerDTOMapper,
     ) : MovieRepo {
 
-    override fun getTopRatedMovies(sort: String): Single<List<Movie>> {
+    override fun getTopRatedMovies(sortBy: String): Single<List<Movie>> {
 
-        return movieApi.getTopRatedMovies(API_KEY, "en-us", sort,
+        return movieApi.getTopRatedMovies(API_KEY, "en-us", sortBy,
         "false", "false", 1)
             .map {
                 movieMapper.mapToDomainList(it.results)

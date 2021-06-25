@@ -19,6 +19,8 @@ import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.Const.YOUTUBE_TRAILER_BASE_URL
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
+import com.example.popularmovies_kotlin.databinding.FragmentDetailBinding
+import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
 import com.gnova.domain.models.Movie
 import com.gnova.domain.models.Trailer
@@ -27,7 +29,7 @@ import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.status_image
 import javax.inject.Inject
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory<DetailViewModel>
@@ -38,19 +40,14 @@ class DetailFragment : Fragment() {
         })
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    private var _binding: FragmentDetailBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         (requireActivity().application as App).appComponent.inject(this)
-
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+        val binding = FragmentDetailBinding.bind(view)
+        _binding = binding
 
         // Grab the selectedMovie from the safeargs
         val movie = DetailFragmentArgs.fromBundle(requireArguments()).selectedMovie
@@ -134,6 +131,11 @@ class DetailFragment : Fragment() {
                 .into(imageView)
         }
 
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
 }

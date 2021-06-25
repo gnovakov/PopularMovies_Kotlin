@@ -11,16 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_END_URL
 import com.example.popularmovies_kotlin.Const.YOUTUBE_THUMBNAIL_START_URL
 import com.example.popularmovies_kotlin.R
+import com.example.popularmovies_kotlin.databinding.MovieGridViewItemBinding
+import com.example.popularmovies_kotlin.databinding.TrailerGridViewItemBinding
 import com.gnova.domain.models.Trailer
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.trailer_grid_view_item.view.*
 
-class TrailerAdapter(private val onClickListener: OnClickListener) : ListAdapter<Trailer, TrailerAdapter.TrailerHolder>(DiffCallback) {
+class TrailerViewAdapter(private val onClickListener: OnClickListener) : ListAdapter<Trailer, TrailerViewAdapter.TrailerHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrailerHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.trailer_grid_view_item, parent, false)
         Log.d("TAG", "onCreateViewHolder TRAILER")
-        return TrailerHolder(view)
+        return TrailerHolder(TrailerGridViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: TrailerHolder, position: Int) {
@@ -31,11 +31,11 @@ class TrailerAdapter(private val onClickListener: OnClickListener) : ListAdapter
         holder.bind(trailer)
     }
 
-    class TrailerHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class TrailerHolder(val binding: TrailerGridViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(trailer: Trailer) {
             Log.d("TAG", "showTrailers TRAILER " + trailer.name)
-            itemView.trailer_name.text = trailer.name
+            binding.trailerName.text = trailer.name
 
             val imgUrl = YOUTUBE_THUMBNAIL_START_URL + trailer.key + YOUTUBE_THUMBNAIL_END_URL
             imgUrl.let {
@@ -44,7 +44,7 @@ class TrailerAdapter(private val onClickListener: OnClickListener) : ListAdapter
                     .load(imgUri)
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.ic_broken_image)
-                    .into(itemView.trailer_image)
+                    .into(binding.trailerImage)
             }
 
         }

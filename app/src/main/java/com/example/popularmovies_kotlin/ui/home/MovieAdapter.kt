@@ -9,18 +9,17 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.popularmovies_kotlin.Const.BASE_IMAGE_LARGE
 import com.example.popularmovies_kotlin.R
+import com.example.popularmovies_kotlin.databinding.MovieGridViewItemBinding
 import com.gnova.domain.models.Movie
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.movie_grid_view_item.view.*
 
-class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<Movie, MovieAdapter.MovieHolder>(DiffCallback) {
+class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DiffCallback) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.movie_grid_view_item, parent, false)
-        return MovieHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
+        return MovieViewHolder(MovieGridViewItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    override fun onBindViewHolder(holder: MovieHolder, position: Int) {
+    override fun onBindViewHolder( holder: MovieViewHolder, position: Int) {
         val movies = getItem(position)
         holder.itemView.setOnClickListener {
             onClickListener.onClick(movies)
@@ -28,7 +27,7 @@ class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<M
         holder.bind(movies)
     }
 
-    class MovieHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class MovieViewHolder(val binding: MovieGridViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(movie: Movie) {
 
@@ -39,7 +38,7 @@ class MovieAdapter(private val onClickListener: OnClickListener) : ListAdapter<M
                     .load(imgUri)
                     .placeholder(R.drawable.loading_animation)
                     .error(R.drawable.ic_broken_image)
-                    .into(itemView.movieImage)
+                    .into(binding.movieImage)
             }
 
         }

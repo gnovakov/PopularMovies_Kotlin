@@ -15,7 +15,6 @@ import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
 import com.example.popularmovies_kotlin.ui.home.HomeViewState.*
 import com.gnova.domain.models.Movie
-import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
 
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -57,16 +56,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (it) {
                 is Loading -> {
                     Log.d("TAG", "LOADING")
-                    status_image.visibility = View.VISIBLE
-                    status_image.setImageResource(R.drawable.loading_animation)
+                    binding.statusImage.visibility = View.VISIBLE
+                    binding.statusImage.setImageResource(R.drawable.loading_animation)
                 }
                 is Error -> {
                     Log.d("TAG", "ERROR HOME FRAGMENT")
-                    status_image.visibility = View.VISIBLE
-                    status_image.setImageResource(R.drawable.ic_connection_error)
+                    binding.statusImage.visibility = View.VISIBLE
+                    binding.statusImage.setImageResource(R.drawable.ic_connection_error)
                 }
                 is Presenting -> {
-                    status_image.visibility = View.GONE
+                    binding.statusImage.visibility = View.GONE
                     showMovies(it.results)
                 }
 
@@ -94,9 +93,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setupRecyclerView() {
         Log.d("TAG", "setupRecyclerView")
-        movie_recycler_view.setHasFixedSize(true)
-        movie_recycler_view.layoutManager = GridLayoutManager(this.context, 2)
-        movie_recycler_view.adapter = adapter
+        binding.movieRecyclerView.setHasFixedSize(true)
+        binding.movieRecyclerView.layoutManager = GridLayoutManager(this.context, 2)
+        binding.movieRecyclerView.adapter = adapter
     }
 
 

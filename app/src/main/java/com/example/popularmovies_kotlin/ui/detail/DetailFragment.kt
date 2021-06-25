@@ -1,13 +1,10 @@
 package com.example.popularmovies_kotlin.ui.detail
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
@@ -20,13 +17,10 @@ import com.example.popularmovies_kotlin.Const.YOUTUBE_TRAILER_BASE_URL
 import com.example.popularmovies_kotlin.R
 import com.example.popularmovies_kotlin.ViewModelFactory
 import com.example.popularmovies_kotlin.databinding.FragmentDetailBinding
-import com.example.popularmovies_kotlin.databinding.FragmentHomeBinding
 import com.example.popularmovies_kotlin.ui.detail.DetailViewState.*
 import com.gnova.domain.models.Movie
 import com.gnova.domain.models.Trailer
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_detail.*
-import kotlinx.android.synthetic.main.fragment_detail.status_image
 import javax.inject.Inject
 
 class DetailFragment : Fragment(R.layout.fragment_detail) {
@@ -34,8 +28,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     @Inject
     internal lateinit var viewModelFactory: ViewModelFactory<DetailViewModel>
     private lateinit var viewModel: DetailViewModel
-    private val trailerAdapter: TrailerAdapter by lazy {
-        TrailerAdapter(TrailerAdapter.OnClickListener {
+    private val trailerViewAdapter: TrailerViewAdapter by lazy {
+        TrailerViewAdapter(TrailerViewAdapter.OnClickListener {
             trailerClick(it)
         })
     }
@@ -68,11 +62,13 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
             when (it) {
                 is Loading -> {
                     Log.d("TAG", "LOADING DF")
-                    status_image.visibility = View.VISIBLE
-                    status_image.setImageResource(R.drawable.loading_animation)
+                    binding.statusImage.visibility = View.VISIBLE
+                    binding.statusImage.setImageResource(R.drawable.loading_animation)
                 }
                 is Error -> {
                     Log.d("TAG", "ERROR")
+                    binding.statusImage.visibility = View.VISIBLE
+                    binding.statusImage.setImageResource(R.drawable.ic_connection_error)
                 }
                 is Presenting -> {
                     Log.d("TAG", "DONE DF")
@@ -95,16 +91,16 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private fun showTrailers(trailers: List<Trailer>) {
         Log.d("TAG", "showTrailers TRAILER " + trailers[0].name)
-        trailerAdapter.submitList(trailers)
+        trailerViewAdapter.submitList(trailers)
     }
 
     private fun initialiseData(movie: Movie) {
-        picassoLoadImages(movie.poster_path, movie_poster)
-        picassoLoadImages(movie.backdrop_path, movie_backdrop)
-        release_date.text = movie.release_date
-        rating.text = movie.vote_average.toString()
-        movie_title.text = movie.title
-        synopsis.text = movie.overview
+        picassoLoadImages(movie.poster_path, binding.moviePoster)
+        picassoLoadImages(movie.backdrop_path, binding.movieBackdrop)
+        binding.releaseDate.text = movie.release_date
+        binding.rating.text = movie.vote_average.toString()
+        binding.movieTitle.text = movie.title
+        binding.synopsis.text = movie.overview
     }
 
     private fun trailerClick(it: Trailer) {
@@ -114,9 +110,9 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun setupRecyclerView() {
-        trailer_recycler_view.setHasFixedSize(true)
-        trailer_recycler_view.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        trailer_recycler_view.adapter = trailerAdapter
+        binding.trailerRecyclerView.setHasFixedSize(true)
+        binding.trailerRecyclerView.layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding.trailerRecyclerView.adapter = trailerViewAdapter
     }
     
 

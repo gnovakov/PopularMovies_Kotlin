@@ -2,6 +2,7 @@ package com.example.popularmovies_kotlin.ui.home
 
 import android.content.Context
 import android.os.Bundle
+import android.system.Os.remove
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -87,7 +88,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     private fun showMovies(movies: List<Movie>) {
-        adapter.submitList(movies)
+        val newMovies: MutableList<Movie> = mutableListOf()
+
+        movies.forEach {
+            if( it.backdrop_path != null &&
+                it.poster_path != null &&
+                it.release_date != null ) {
+                newMovies.add(it)
+            }
+        }
+
+        adapter.submitList(newMovies)
     }
 
 

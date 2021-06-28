@@ -4,17 +4,17 @@ import com.squareup.moshi.Json
 
 data class MovieDTO(
     @Json(name = "id")
-    val id : Int,
+    val id : Int?,
     @Json(name = "vote_average")
-    val vote_average : Double,
+    val vote_average : Double?,
     @Json(name = "title")
-    val title : String,
+    val title : String?,
     @Json(name = "release_date")
-    val release_date : String = "",
+    val release_date : String?,
     @Json(name = "backdrop_path")
-    val backdrop_path : String,
+    val backdrop_path : String?,
     @Json(name = "overview")
-    val overview : String,
+    val overview : String?,
     @Json(name = "poster_path")
-    val poster_path : String
+    val poster_path : String?
 )

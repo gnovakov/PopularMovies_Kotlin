@@ -95,8 +95,8 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
     }
 
     private fun initialiseData(movie: Movie) {
-        picassoLoadImages(movie.poster_path, binding.moviePoster)
-        picassoLoadImages(movie.backdrop_path, binding.movieBackdrop)
+        movie.poster_path?.let { picassoLoadImages(it, binding.moviePoster) }
+        movie.backdrop_path?.let { picassoLoadImages(it, binding.movieBackdrop) }
         binding.releaseDate.text = movie.release_date
         binding.rating.text = movie.vote_average.toString()
         binding.movieTitle.text = movie.title

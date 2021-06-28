@@ -10,6 +10,7 @@ import com.gnova.domain.models.Movie
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.plugins.RxJavaPlugins.onError
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
@@ -28,7 +29,7 @@ class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl
 
 
     fun onViewLoaded() {
-        getTopRatedMovies("vote_count.desc")
+        getTopRatedMovies("popularity.desc")
     }
 
 
@@ -42,11 +43,12 @@ class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl
                 .subscribe({
                     _viewState.value = Presenting(it)
                 }, {
+                    onError(it)
                     Log.d("TAG", "ERROR HOME VM")
                     _viewState.value = Error
                 }
-
-                ))
+                )
+        )
     }
 
     // sets _navigateToSelectedMovie to the selected Mars Movie, when this is set the switch to detail page will happen

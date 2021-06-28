@@ -88,18 +88,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     private fun showMovies(movies: List<Movie>) {
-        val newMovies: MutableList<Movie> = mutableListOf()
 
-        movies.forEach {
-            if( it.backdrop_path != null &&
-                it.poster_path != null &&
-                it.release_date != null ) {
-                newMovies.add(it)
-            }
-        }
+        val cleanedMovies: MutableList<Movie> = removeBrokenMovies(movies)
 
-        adapter.submitList(newMovies)
+        adapter.submitList(cleanedMovies)
     }
+
+
 
 
     private fun setupRecyclerView() {

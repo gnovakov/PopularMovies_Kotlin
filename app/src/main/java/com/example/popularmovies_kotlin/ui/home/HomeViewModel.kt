@@ -23,8 +23,8 @@ class HomeViewModel @Inject constructor(private val movieRepoImpl: MovieRepoImpl
         get() = _viewState
 
     // Holds the selected Movie data
-    private val _navigateToSelectedMovie = MutableLiveData<Movie>()
-    val navigateToSelectedMovie: LiveData<Movie>
+    private val _navigateToSelectedMovie = MutableLiveData<Movie?>()
+    val navigateToSelectedMovie: LiveData<Movie?>
         get() = _navigateToSelectedMovie
 
 

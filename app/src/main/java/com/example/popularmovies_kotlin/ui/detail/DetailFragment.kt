@@ -65,6 +65,7 @@ class DetailFragment : Fragment(R.layout.fragment_detail) {
                     binding.statusImage.visibility = View.VISIBLE
                     binding.statusImage.setImageResource(R.drawable.loading_animation)
                 }
+
                 is Error -> {
                     Log.d("TAG", "ERROR")
                     binding.statusImage.visibility = View.VISIBLE

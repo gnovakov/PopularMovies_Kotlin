@@ -1,6 +1,7 @@
 package com.example.popularmovies_kotlin.ui.home
 
 import com.gnova.domain.models.Movie
+import kotlin.reflect.full.memberProperties
 
 fun removeBrokenMovies(movies: List<Movie>): MutableList<Movie> {
 

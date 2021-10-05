@@ -1,8 +1,6 @@
 package com.example.popularmovies_kotlin.ui.home
 
-import android.content.Context
 import android.os.Bundle
-import android.system.Os.remove
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -86,12 +84,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
 
-
     private fun showMovies(movies: List<Movie>) {
 
-        val cleanedMovies: MutableList<Movie> = removeBrokenMovies(movies)
-
-        adapter.submitList(cleanedMovies)
+        adapter.submitList(removeBrokenMovies(movies))
     }
 
 

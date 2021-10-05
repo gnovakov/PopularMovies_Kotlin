@@ -102,7 +102,7 @@ The below diagram shows the data flow when loading Movies or Trailers in the cur
 
 #### Data Flow Note: 
 
-as the Use Cases would sit in our Domain layer the View Model would call them first, and they would in turn call the Repository in the Data layer, the Repo would do its thing (manage between Api, Internal storage, cache etc...) and send the response to the Mapper in turn Mapping the data between the Data and Domain models and sending the response back to the Use Cases who in turn gives the App module what it was looking for.
+If we included Use Cases/Interactors in this app the controll flow would slightly change, as the Use Cases would sit in our Domain layer the View Model would call them first, and they would in turn call the Repository in the Data layer, the Repo would do its thing (manage between Api, Internal storage, cache etc...) and send the response to the Mapper in turn Mapping the data between the Data and Domain models and sending the response back to the Use Cases who in turn gives the App module what it was looking for.
 
 But how would the domain layer be able to access the data layer if the Domain layer is isolated and has no access to the layers above?
 

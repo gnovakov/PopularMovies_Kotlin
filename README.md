@@ -43,7 +43,7 @@ object Constants {
 
 The app follows Uncle Bob's Clean Architecture with three layers, App, Data and Domain.
 
-This app is small so it is not necessary to have a separate module for each layer, but I've implemented the modules as an example of Clean architecture and how it works, also if in the future I develop the app further as the app grows it maintains strict coding discipline and separation of concerns where different modules with specific responsibilities make it easier for future modification and maintenance, also it keeps the code flexible where anything can be easily changed due to loose coupling
+This app is small so it is not necessary to have a separate module for each layer, but I've implemented the modules as an example of Clean architecture and how it works, also if in the future I develop the app further, as the app grows it maintains strict coding discipline and separation of concerns where different modules with specific responsibilities make it easier for future modification and maintenance, also it keeps the code flexible where anything can be easily changed due to loose coupling
 
 
 
